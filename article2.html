@@ -84,20 +84,16 @@
       padding-left: 12px;
     }
 
+    h3 {
+      font-size: 24px;
+      margin-top: 28px;
+      margin-bottom: 10px;
+      color: #123456;
+    }
+
     p {
       font-size: 21px;
       margin-bottom: 18px;
-    }
-
-    .figure-placeholder {
-      background: #f4f8fc;
-      border: 1px solid #d9e2ec;
-      border-left: 5px solid #1f4e79;
-      padding: 16px 18px;
-      border-radius: 8px;
-      margin: 25px 0;
-      font-size: 19px;
-      color: #333333;
     }
 
     figure {
@@ -159,11 +155,11 @@
         font-size: 24px;
       }
 
-      .article-meta p {
-        font-size: 17px;
+      h3 {
+        font-size: 21px;
       }
 
-      .figure-placeholder {
+      .article-meta p {
         font-size: 17px;
       }
     }
@@ -189,15 +185,21 @@
       </div>
 
       <p>
-        In many primary classrooms, the early signs of learning difficulty do not appear all at once. They emerge through small, uneven patterns: inconsistent progress, repeated misconceptions, fragile retention, changes in engagement, or growing task avoidance. The challenge is that these signals are often gradual, fragmented, and easy to miss when they are spread across different moments, tasks, and records.
+        Data science may help schools identify emerging patterns of need earlier by combining multiple indicators more systematically, but its value depends entirely on careful interpretation, ethical design, and professional oversight. Used well, it sharpens the questions professionals ask. Used carelessly, it risks reducing children to risk scores that carry the biases of the systems that produced them.
+      </p>
+
+      <h2>Why early identification is difficult</h2>
+
+      <p>
+        In many primary classrooms, the early signs of learning difficulty do not appear all at once. They emerge through small, uneven patterns such as inconsistent progress, repeated misconceptions, fragile retention, changes in engagement, or growing task avoidance. The challenge is that these signals are often gradual, fragmented, and easy to miss when they are spread across different moments, tasks, and records.
       </p>
 
       <p>
-        This difficulty is shaped by the realities of classroom life. In England, the average state-funded primary class size is now around 26 to 27 pupils, which means that a single teacher is often teaching, observing, responding to behaviour, adapting explanations, checking understanding, and making in-the-moment decisions for a large group at the same time. In the early stages, much of this work relies on professional judgement, memory, and informal notes. Some patterns are obvious. Others are not.
+        This difficulty is shaped by the realities of classroom life. In England, the average state-funded primary class size is now around 26 to 27 pupils, which means that a single teacher is often teaching, observing, responding to behaviour, adapting explanations, checking understanding, and making in-the-moment decisions for a large group simultaneously. In the early stages, much of this work relies on professional judgement, memory, and informal notes. Some patterns are obvious. Others are not.
       </p>
 
       <p>
-        That is not a weakness in teachers; it is a feature of a complex environment. Early career teachers may have had less exposure to certain patterns of difficulty, while even experienced teachers can find that less visible combinations of need are overshadowed by pupils whose difficulties are more immediately apparent. The result is that some pupils may remain categorised as broadly average even when their pattern of learning suggests that closer review may be warranted. Kovanovic, Mazziotti and Lodge (2021), in an editorial introducing a special section of the <em>Journal of Learning Analytics</em> focused on primary and secondary schools, note that the growing availability of educational data creates real opportunities for supporting students and for understanding learning progress in pre-university contexts, but that realising those opportunities requires careful design and sustained professional engagement.
+        That is not a weakness in teachers; it is a feature of a complex environment. Early career teachers may have had less exposure to certain patterns of difficulty, while even experienced teachers can find that less visible combinations of need are overshadowed by pupils whose difficulties are more immediately apparent. The result is that some pupils may remain categorised as broadly average even when their pattern of learning suggests that closer review may be warranted. Kovanovic, Mazziotti and Lodge (2021) note that the growing availability of educational data creates real opportunities for supporting students and understanding learning progress in pre-university contexts, but that realising those opportunities requires careful design and sustained professional engagement.
       </p>
 
       <h2>What data science might add</h2>
@@ -207,26 +209,33 @@
       </p>
 
       <p>
-        The aim is not diagnosis or automated labelling. The aim is to help schools notice which pupils may benefit from fuller discussion, closer review, or more tailored support. A pupil may look broadly secure when only one measure is considered in isolation. But when several indicators are read together, a different picture may emerge. This is where data science may offer practical value: not by replacing judgement, but by helping to make scattered signals more visible and therefore more open to informed professional enquiry. Foldnes et al. (2024), in a study of early reading difficulty detection using gameplay data and machine learning, found that combining process data with screening assessments allowed the identification of at-risk readers with considerably greater accuracy than single-measure approaches, suggesting that multi-indicator models hold genuine promise when implemented thoughtfully in school settings.
+        The aim is not diagnosis or automated labelling. The aim is to help schools notice which pupils may benefit from fuller discussion, closer review, or more tailored support. A pupil may look broadly secure when only one measure is considered in isolation. But when several indicators are read together, a different picture may emerge. This is where data science may offer practical value: not by replacing judgement, but by helping to make scattered signals more visible and therefore more open to informed professional enquiry. Foldnes et al. (2024) found that combining process data with screening assessments allowed the identification of at-risk readers with considerably greater accuracy than single-measure approaches, suggesting that multi-indicator models hold genuine promise when implemented thoughtfully in school settings.
       </p>
 
-      <div class="figure-placeholder">
-        <strong>Figure 1 placeholder.</strong> After uploading the image file, replace this box with the final Figure 1 image and caption.
-      </div>
+      <figure>
+        <img src="article2_figure1.png" alt="A conceptual illustration showing how multiple classroom indicators can combine over time to justify closer review.">
+        <figcaption><strong>Figure 1.</strong> A conceptual illustration of how multiple classroom indicators, none of which may be concerning in isolation, can together justify closer review when the pattern persists over time.</figcaption>
+      </figure>
 
       <h2>Classroom patterns that single indicators can miss</h2>
 
       <p>
-        In practice, the challenge of early identification is not always that there is no signal. Often, the signal is present but fragmented, gradual, or hidden behind labels such as average, middle-attaining, or low effort. The examples below are illustrative patterns drawn from observations I made during school placement, presented in anonymised and slightly generalised form to protect confidentiality. They are included to show how multi-indicator review might work in practice, rather than as diagnostic profiles of individual pupils.
+        In practice, the challenge of early identification is not always that there is no signal. Often, the signal is present but fragmented, gradual, or hidden behind labels such as “average”, “middle-attaining”, or “low effort”. The examples below are illustrative patterns drawn from observations made during school placement, presented in anonymised and slightly generalised form to protect confidentiality. They are included to show how multi-indicator review might work in practice, rather than as diagnostic profiles of individual pupils.
       </p>
 
-      <p>
-        The first example is a pupil who was generally perceived as a middle-attaining learner. In everyday classwork, she appeared to cope reasonably well and could complete tasks with the level of support typically given to the rest of the group. Over time, however, a more uneven pattern emerged. Her in-class assignments were often secure enough, particularly when tasks were scaffolded and teacher guidance was available, but her assessment outcomes were consistently much weaker. Because she was viewed as an average pupil, this discrepancy did not immediately trigger distinct intervention. Her attendance was almost perfect, which may also have reduced the likelihood of concern being raised through routine monitoring. When I began using target questioning more deliberately, I found that her responses were often less secure than her classwork initially suggested, which reinforced the sense that supported classroom performance was masking weaker independent understanding. Later, additional features became more noticeable: moments of distraction during lessons, inconsistent concentration, and signs that classroom performance did not translate into secure independent understanding. Taken together, these features suggest the kind of pattern that warrants closer review rather than routine middle-band support alone.
-      </p>
+      <h3>A pattern of masked difficulty</h3>
 
       <p>
-        The second example is a pupil whose main difficulty did not present as behaviour, attendance, or refusal to engage, but as unusually fragile memory. He could often understand material in the moment when it was carefully explained and scaffolded, and there was no obvious indication of difficulty in the conventional sense. The pattern became clearer over time because learning seemed unusually fragile: concepts that had appeared secure one day might be lost a day or two later. He also struggled at times to copy accurately from the board, which can seem minor in isolation but matters when it repeatedly affects a pupil’s ability to retain information, complete tasks independently, or build confidence in written work. The pattern was not one of disruption or refusal, but of weak retention and inconsistency across time.
+        The first example is a pupil generally perceived as a middle-attaining learner. In everyday classwork, she appeared to cope reasonably well and could complete tasks with the level of support typically given to the group. Over time, however, a more uneven pattern emerged. Her in-class assignments were often secure enough, particularly when tasks were scaffolded and teacher guidance was available, but her assessment outcomes were consistently much weaker. Because she was viewed as an average pupil, this discrepancy did not immediately trigger distinct intervention. Her attendance was almost perfect, which may also have reduced the likelihood of concern being raised through routine monitoring. When target questioning was used more deliberately, her responses were often less secure than classwork initially suggested, reinforcing the sense that supported classroom performance was masking weaker independent understanding.
       </p>
+
+      <h3>A pattern of fragile retention</h3>
+
+      <p>
+        The second example is a pupil whose main difficulty did not present as behaviour, attendance, or refusal to engage, but as unusually fragile memory. He could often understand material in the moment when it was carefully explained and scaffolded, and there was no obvious indication of difficulty in the conventional sense. The pattern became clearer over time because learning seemed unusually fragile: concepts that had appeared secure one day might be lost a day or two later. He also struggled at times to copy accurately from the board, which can seem minor in isolation, but matters when it repeatedly affects a pupil’s ability to retain information, complete tasks independently, or build confidence in written work.
+      </p>
+
+      <h3>A pattern of persistent avoidance</h3>
 
       <p>
         The third example is a pupil whose main pattern was avoidance. When asked to begin or complete work, he would often hesitate, withdraw effort quickly, or give up before making a genuine attempt. On the surface, this might be read simply as low motivation or poor resilience. Yet patterns of avoidance can reflect repeated experiences of difficulty, low academic confidence, fear of failure, or a learned expectation that success is unlikely. If such a pattern is interpreted only as non-compliance, the response may remain behavioural and miss what is actually driving the withdrawal. A more careful reading of the pattern, supported by other indicators, may point towards a need for different forms of support, clearer task structuring, or closer investigation into what underlies the avoidance.
@@ -235,29 +244,38 @@
       <h2>Potential benefits for schools</h2>
 
       <p>
-        A carefully designed data-informed approach may help schools in at least four interconnected ways, and it is worth considering these as a coherent set rather than a simple list of separate advantages. The first and most fundamental is earlier recognition: by bringing together signals that would otherwise remain disconnected across different lessons, assessments, and observations, a more systematic approach creates the conditions under which weaker patterns can become visible before they have grown into entrenched difficulties. The second follows directly from this: reduced overreliance on any single measure, whether a test score, an attendance figure, or a teacher’s impression from one day, creates a broader and more reliable basis for professional judgement.
+        A carefully designed data-informed approach may help schools in at least four interconnected ways, and it is worth considering these as a coherent set rather than a simple list of separate advantages.
       </p>
 
       <p>
-        The third concerns prioritisation, which matters particularly in schools where staff capacity is limited and not every concern can be explored with equal depth at the same time; a more systematic view of patterns across indicators helps schools direct attention where it is most needed. The fourth is perhaps the most practically significant: shifting the focus of support conversations from isolated results to patterns over time produces better questions, and better questions lead to better outcomes.
+        The first and most fundamental is earlier recognition: by bringing together signals that would otherwise remain disconnected across different lessons, assessments, and observations, a more systematic approach creates the conditions under which weaker patterns can become visible before they have grown into entrenched difficulties. The second follows directly from this: reduced overreliance on any single measure, whether a test score, an attendance figure, or a teacher’s impression from one day, creates a broader and more reliable basis for professional judgement.
+      </p>
+
+      <p>
+        The third concerns prioritisation, which matters particularly in schools where staff capacity is limited and not every concern can be explored with equal depth at the same time. A more systematic view of patterns across indicators helps schools direct attention where it is most needed. The fourth is perhaps the most practically significant: shifting the focus of support conversations from isolated results to patterns over time produces better questions, and better questions lead to better outcomes. Which pupils show repeated inconsistency between scaffolded and independent performance? Where does task completion diverge from assessment outcomes? Which patterns are persistent enough to justify closer review? These are the kinds of questions that improved pattern recognition can support.
       </p>
 
       <h2>Limits, risks, and ethical caution</h2>
 
       <p>
-        Any argument for data science in this area must be approached with considerable caution, and the risks are serious enough to warrant extended discussion rather than a brief acknowledgement. Poor-quality data will produce poor-quality outputs. Incomplete records, inconsistent teacher entries, narrow indicators, or biased assumptions embedded in the design of a system can all distort what that system appears to show. Correlation is not diagnosis, and a flagged pattern should never be treated as proof that a pupil has a particular need. At most, it should trigger a more careful professional conversation.
-      </p>
-
-      <div class="figure-placeholder">
-        <strong>Figure 2 placeholder.</strong> After uploading the image file, replace this box with the final Figure 2 image and caption.
-      </div>
-
-      <p>
-        The risk of reinforcing existing inequality is not theoretical. Baker and Hawn (2021), in a systematic review of algorithmic bias in education published in the <em>International Journal of Artificial Intelligence in Education</em>, document how educational algorithms have repeatedly amplified existing disparities along the lines of race, gender, socioeconomic background, and disability. Systems trained on historical data inherit the assumptions embedded in that history. If past referral patterns, behaviour records, or attainment expectations already reflect unequal treatment, any predictive model built on that data risks reproducing those distortions in a form that appears more objective than it actually is. As Baker and Hawn (2021) put it, the groups most likely to be harmed by biased algorithms are those who are already disadvantaged, precisely because the historical data contains less equitable treatment of those groups. Pupils should not be reduced to risk scores, and schools should be critical of any tool that presents itself as neutral while encoding questionable assumptions in its design.
+        Any argument for data science in this area must be approached with considerable caution, and the risks are serious enough to warrant extended discussion rather than a brief acknowledgement. Poor quality data will produce poor quality outputs. Incomplete records, inconsistent teacher entries, narrow indicators, or biased assumptions embedded in the design of a system can all distort what that system appears to show. Correlation is not diagnosis, and a flagged pattern should never be treated as proof that a pupil has a particular need. At most, it should trigger a more careful professional conversation.
       </p>
 
       <p>
-        For this reason, the role of professional judgement remains central and non-negotiable. Data-informed systems are most defensible when they function as prompts for enquiry rather than mechanisms for labelling. Their purpose should be to widen attention, not narrow it; to support thoughtful review, not replace human interpretation; and to help schools ask better questions about what support may be needed. Pardo and Siemens (2014), writing in the <em>British Journal of Educational Technology</em>, argue that ethical learning analytics requires informed consent, respect for privacy, and transparent explanation of how data is being used. In a primary school context, where children and families may have limited understanding of how their data is being processed, these obligations are especially important.
+        The diagram below reflects the central ethical concern in this section: data-informed systems can only be trusted if schools remain alert to the possibility that skewed records, uneven referral histories, or narrow behavioural labels may shape what the system appears to detect.
+      </p>
+
+      <figure>
+        <img src="article2_figure2.png" alt="A conceptual illustration showing how biased historical inputs can shape model outputs and why professional review should sit between alerts and support decisions.">
+        <figcaption><strong>Figure 2.</strong> A conceptual illustration of how potentially biased historical inputs can shape model outputs, and why professional review must sit between any alert and any decision about support.</figcaption>
+      </figure>
+
+      <p>
+        The risk of reinforcing existing inequality is not theoretical. Baker and Hawn (2021) document how educational algorithms have repeatedly amplified existing disparities along the lines of race, gender, socioeconomic background, and disability. Systems trained on historical data inherit the assumptions embedded in that history. If past referral patterns, behaviour records, or attainment expectations already reflect unequal treatment, any predictive model built on that data risks reproducing those distortions in a form that appears more objective than it actually is. Pupils should not be reduced to risk scores, and schools should be critical of any tool that presents itself as neutral while encoding questionable assumptions in its design.
+      </p>
+
+      <p>
+        For this reason, the role of professional judgement remains central and non-negotiable. Data-informed systems are most defensible when they function as prompts for enquiry rather than mechanisms for labelling. Their purpose should be to widen attention, not narrow it; to support thoughtful review, not replace human interpretation; and to help schools ask better questions about what support may be needed. Pardo and Siemens (2014) argue that ethical learning analytics requires informed consent, respect for privacy, and transparent explanation of how data is being used. In a primary school context, where children and families may have limited understanding of how their data is being processed, these obligations are especially important.
       </p>
 
       <h2>Looking ahead</h2>
@@ -275,6 +293,10 @@
       <div class="references">
         <p>
           Baker, R.S. and Hawn, A. (2021) ‘Algorithmic bias in education’, <em>International Journal of Artificial Intelligence in Education</em>, 32(4), pp. 1052–1092. doi: 10.1007/s40593-021-00285-9.
+        </p>
+
+        <p>
+          Department for Education (2025) <em>School pupils and their characteristics. Average class size in state-funded primary schools</em>. Available at: https://explore-education-statistics.service.gov.uk/
         </p>
 
         <p>
