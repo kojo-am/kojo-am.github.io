@@ -3,292 +3,421 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Education, Data Science, and Inclusive Practice</title>
+  <title>Emmanuel Adu Amoako — Education, Evidence and Inclusive Practice</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
   <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #0f2d4a;
+      --navy2:  #1a3f61;
+      --gold:   #c9a84c;
+      --gold2:  #e8c96a;
+      --ink:    #1a1a1a;
+      --mid:    #4a5568;
+      --light:  #f5f7fa;
+      --card:   #ffffff;
+      --border: #dde4ed;
+      --rule:   #c9a84c;
+    }
+
+    html { scroll-behavior: smooth; }
+
     body {
-      margin: 0;
-      font-family: "Times New Roman", Times, serif;
-      background: linear-gradient(to bottom, #eef3f8, #f8fafc);
-      color: #111111;
+      font-family: 'Source Serif 4', Georgia, serif;
+      background: var(--light);
+      color: var(--ink);
       line-height: 1.8;
     }
 
     .hero {
-      background: linear-gradient(135deg, #123456, #1f4e79);
-      color: white;
-      padding: 70px 20px 60px 20px;
-      border-bottom: 6px solid #d4af37;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+      background: var(--navy);
+      color: #fff;
+      padding: 80px 24px 100px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 80% 20%, rgba(201,168,76,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 10% 90%, rgba(26,63,97,0.6) 0%, transparent 50%);
+      pointer-events: none;
     }
 
     .hero-inner {
-      max-width: 980px;
+      max-width: 900px;
       margin: 0 auto;
+      position: relative;
+    }
+
+    .hero-label {
+      display: inline-block;
+      font-family: 'Source Serif 4', serif;
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold2);
+      margin-bottom: 22px;
+      opacity: 0.9;
     }
 
     .hero h1 {
-      margin: 0 0 18px 0;
-      font-size: 40px;
-      line-height: 1.25;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 700;
+      line-height: 1.18;
+      margin-bottom: 24px;
+      letter-spacing: -0.01em;
     }
 
-    .hero p {
-      margin: 0;
-      max-width: 820px;
-      font-size: 21px;
+    .hero h1 span { color: var(--gold2); }
+
+    .hero-sub {
+      font-size: clamp(17px, 2.2vw, 20px);
+      line-height: 1.7;
+      color: rgba(255,255,255,0.82);
+      max-width: 700px;
+      font-weight: 300;
+    }
+
+    .hero-rule {
+      width: 56px;
+      height: 3px;
+      background: var(--gold);
+      margin: 30px 0 0;
+      border-radius: 2px;
     }
 
     .page {
-      max-width: 980px;
+      max-width: 960px;
       margin: 0 auto;
-      padding: 0 20px 50px 20px;
+      padding: 0 20px 60px;
     }
 
-    .main-card {
-      background: white;
-      max-width: 900px;
-      margin: -35px auto 0 auto;
-      padding: 35px 32px;
-      border-radius: 14px;
-      box-shadow: 0 10px 28px rgba(0,0,0,0.10);
-      border-top: 4px solid #d4af37;
-    }
-
-    h2 {
-      font-size: 28px;
-      margin-top: 10px;
-      margin-bottom: 14px;
-      color: #123456;
-      border-left: 5px solid #d4af37;
-      padding-left: 12px;
-    }
-
-    p {
-      font-size: 21px;
-      margin-bottom: 18px;
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(15,45,74,0.09);
+      padding: 40px 36px;
+      margin-top: -44px;
+      border-top: 4px solid var(--gold);
     }
 
     .intro-box {
-      background: #f4f8fc;
-      border-left: 5px solid #1f4e79;
-      padding: 16px 18px;
-      border-radius: 8px;
-      margin: 25px 0 30px 0;
+      background: #f0f5fb;
+      border-left: 4px solid var(--navy2);
+      padding: 18px 22px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 40px;
+    }
+
+    .intro-box p {
+      font-size: 18px;
+      line-height: 1.75;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 40px 0 8px;
+    }
+
+    .section-head h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(20px, 3vw, 26px);
+      font-weight: 600;
+      color: var(--navy);
+      line-height: 1.25;
+    }
+
+    .section-rule {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
     }
 
     .section-intro {
-      margin-bottom: 18px;
+      font-size: 17px;
+      color: var(--mid);
+      margin-bottom: 22px;
+      font-style: italic;
     }
 
     .article-list {
       list-style: none;
-      padding: 0;
-      margin: 20px 0 30px 0;
-    }
-
-    .article-list li {
-      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 12px;
     }
 
     .article-link {
       display: block;
       text-decoration: none;
-      color: #111111;
-      background: #fbfcfe;
-      border: 1px solid #d9e2ec;
-      border-left: 5px solid #d4af37;
-      padding: 18px 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      color: var(--ink);
+      background: #fafbfd;
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--gold);
+      padding: 20px 22px;
+      border-radius: 8px;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
     }
 
     .article-link:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(15,45,74,0.11);
+      border-left-color: var(--navy);
     }
 
     .article-title {
       display: block;
-      font-size: 24px;
-      font-weight: bold;
-      color: #123456;
-      margin-bottom: 6px;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 7px;
+      line-height: 1.3;
     }
 
     .article-desc {
       display: block;
-      font-size: 18px;
-      color: #333333;
+      font-size: 16px;
+      color: var(--mid);
+      line-height: 1.65;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: var(--navy);
+      color: var(--gold2);
+      padding: 3px 9px;
+      border-radius: 3px;
+      margin-bottom: 10px;
     }
 
     .coming-soon {
       display: block;
-      background: #f8f8f8;
-      border: 1px dashed #c7c7c7;
-      padding: 18px 20px;
-      border-radius: 10px;
-      color: #555555;
-      font-size: 19px;
+      background: #f8f9fb;
+      border: 1px dashed #c5cdd8;
+      padding: 20px 22px;
+      border-radius: 8px;
+      color: var(--mid);
+      font-size: 16px;
+      line-height: 1.65;
     }
 
     .coming-soon strong {
       display: block;
-      color: #123456;
-      font-size: 22px;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 19px;
+      color: var(--navy);
       margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .coming-tag {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: #e8ecf2;
+      color: var(--mid);
+      padding: 3px 9px;
+      border-radius: 3px;
+      margin-bottom: 10px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .about-block {
+      background: #f5f8fc;
+      border-radius: 8px;
+      padding: 22px 20px;
+      border-top: 3px solid var(--gold);
+    }
+
+    .about-block h3 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 17px;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+
+    .about-block p {
+      font-size: 16px;
+      color: var(--mid);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .prose p {
+      font-size: 18px;
+      line-height: 1.8;
+      color: var(--ink);
+      margin-bottom: 16px;
     }
 
     .footer {
       text-align: center;
-      padding: 28px 15px 20px 15px;
-      color: #555555;
-      font-size: 16px;
+      padding: 32px 20px 24px;
+      color: var(--mid);
+      font-size: 15px;
+      border-top: 1px solid var(--border);
+      margin-top: 20px;
     }
 
-    @media (max-width: 768px) {
-      .hero {
-        padding: 45px 20px;
-      }
+    .footer strong { color: var(--navy); }
 
-      .hero h1 {
-        font-size: 32px;
-      }
-
-      .hero p,
-      p {
-        font-size: 19px;
-      }
-
-      .main-card {
-        padding: 24px 20px;
-      }
-
-      h2 {
-        font-size: 24px;
-      }
-
-      .article-title {
-        font-size: 21px;
-      }
-
-      .coming-soon strong {
-        font-size: 20px;
-      }
+    @media (max-width: 680px) {
+      .card { padding: 26px 18px; margin-top: -30px; }
+      .about-grid { grid-template-columns: 1fr; }
+      .hero { padding: 60px 20px 80px; }
     }
   </style>
 </head>
 <body>
+
   <div class="hero">
     <div class="hero-inner">
-      <h1>Education, Data Science, and Inclusive Practice</h1>
-      <p>
-        A portfolio of writing and projects exploring how data, professional judgment, and responsible technology can support better decisions in education.
+      <span class="hero-label">Emmanuel Adu Amoako</span>
+      <h1>Education, Evidence<br>and <span>Inclusive Practice</span></h1>
+      <p class="hero-sub">
+        Writing and projects at the intersection of classroom experience, data science, and the honest interpretation of evidence in schools.
       </p>
+      <div class="hero-rule"></div>
     </div>
   </div>
 
   <div class="page">
-    <div class="main-card">
+    <div class="card">
+
       <div class="intro-box">
         <p>
-          Written by <strong>Emmanuel Adu Amoako</strong>, this website brings together education writing, public-facing commentary, and developing data science work. Its focus is careful interpretation, inclusive practice, and the responsible use of evidence in schools.
+          <strong>Emmanuel Adu Amoako</strong> is a teacher and data scientist with an interest in how evidence, professional judgement, and responsible technology can support better decisions in education. This site brings together public-facing education writing, commentary on assessment and inclusion, and developing data science work. The concern running through all of it is the same: what does the evidence actually say, and what does it miss?
         </p>
       </div>
 
-      <h2>Featured Series: Interpreting School Data More Carefully</h2>
-
-      <p class="section-intro">
-        A four-part public-facing series exploring what school assessment data in England can reveal, what it can hide, and why careful interpretation matters.
-      </p>
+      <div class="section-head">
+        <h2>Featured Series: Interpreting School Data More Carefully</h2>
+        <div class="section-rule"></div>
+      </div>
+      <p class="section-intro">A four-part public-facing series exploring what school assessment data in England can reveal, what it can hide, and why careful interpretation matters.</p>
 
       <ul class="article-list">
         <li>
           <a class="article-link" href="article1.html">
-            <span class="article-title">Article 1: What school assessment data can show and what it cannot</span>
+            <span class="badge">Article 1 — Published</span>
+            <span class="article-title">What School Assessment Data Can Show — and What It Cannot</span>
             <span class="article-desc">An introduction to the limits of reading assessment data as self-explanatory, using Newham and England as an illustrative example.</span>
           </a>
         </li>
-
         <li>
           <a class="article-link" href="article2.html">
-            <span class="article-title">Article 2: Can Data Science Support Earlier Identification of Learning Needs in Primary Classrooms?</span>
+            <span class="badge">Article 2 — Published</span>
+            <span class="article-title">Can Data Science Support Earlier Identification of Learning Needs in Primary Classrooms?</span>
             <span class="article-desc">Exploring whether data science can help schools notice emerging patterns of need earlier, and why its value depends on interpretation, ethics, and professional oversight.</span>
           </a>
         </li>
-
         <li>
           <span class="coming-soon">
-            <strong>Article 3: Why Teacher Professional Judgement Still Matters in Data-Informed Education</strong>
-            Coming soon — examining why context, interpretation and classroom knowledge remain essential.
+            <span class="coming-tag">Article 3 — Coming Soon</span>
+            <strong>Why Teacher Professional Judgement Still Matters in Data-Informed Education</strong>
+            Examining why context, interpretation, and classroom knowledge remain essential alongside any data system.
           </span>
         </li>
-
         <li>
           <span class="coming-soon">
-            <strong>Article 4: What Ethical Education Technology Should Look Like in Primary Schools</strong>
-            Coming soon — considering inclusion, fairness and responsible design in primary education technology.
-          </span>
-        </li>
-      </ul>
-
-      <h2>Education Commentary</h2>
-
-      <p class="section-intro">
-        Short essays on assessment, inclusion, curriculum, and the realities of school life.
-      </p>
-
-      <ul class="article-list">
-        <li>
-          <span class="coming-soon">
-            <strong>What SATs Scores Miss</strong>
-            Coming soon — on assessment, transition, setting, and the limits of narrow attainment measures.
-          </span>
-        </li>
-
-        <li>
-          <span class="coming-soon">
-            <strong>When Inclusion Becomes Paperwork</strong>
-            Coming soon — on SEND, curriculum access, and what meaningful learning can look like for children with complex needs.
+            <span class="coming-tag">Article 4 — Coming Soon</span>
+            <strong>What Ethical Education Technology Should Look Like in Primary Schools</strong>
+            Considering inclusion, fairness, and responsible design in primary education technology.
           </span>
         </li>
       </ul>
 
-      <h2>Education Data Science Projects</h2>
+      <div class="section-head">
+        <h2>Education Commentary</h2>
+        <div class="section-rule"></div>
+      </div>
+      <p class="section-intro">Short essays on assessment, inclusion, curriculum, and the realities of school life.</p>
 
-      <p class="section-intro">
-        Practical projects using data analysis, modelling, and visualisation to explore educational questions responsibly.
-      </p>
+      <ul class="article-list">
+        <li>
+          <a class="article-link" href="sats.html">
+            <span class="badge">Essay — Published</span>
+            <span class="article-title">What SATs Scores Miss</span>
+            <span class="article-desc">On the pressure KS2 SATs place on children, the narrowing of the curriculum, and why a test that does not determine secondary school admission still shapes what happens when children arrive there.</span>
+          </a>
+        </li>
+        <li>
+          <a class="article-link" href="sen.html">
+            <span class="badge">Essay — Published</span>
+            <span class="article-title">When Inclusion Becomes Paperwork</span>
+            <span class="article-desc">On SEN, curriculum access, pupil-led learning, and what meaningful education can look like for children with complex needs when we are willing to follow their lead.</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="section-head">
+        <h2>Education Data Science Projects</h2>
+        <div class="section-rule"></div>
+      </div>
+      <p class="section-intro">Practical projects using data analysis, modelling, and visualisation to explore educational questions responsibly.</p>
 
       <ul class="article-list">
         <li>
           <span class="coming-soon">
-            <strong>Projects coming soon</strong>
+            <span class="coming-tag">Coming Soon</span>
+            <strong>Projects in Development</strong>
             School data analysis, predictive modelling, and other education-focused data science work will be added here.
           </span>
         </li>
       </ul>
 
-      <h2>About the Site</h2>
+      <div class="section-head">
+        <h2>About This Site</h2>
+        <div class="section-rule"></div>
+      </div>
+      <div class="prose">
+        <p>This site is designed as a growing portfolio. It combines a structured article series on the interpretation of school data, broader commentary on assessment and inclusion, and future data science projects focused on educational questions.</p>
+        <p>Across all sections, the central concern is the same: how evidence should be interpreted carefully, how professional judgement still matters, and how data-informed systems can be designed more responsibly for the children they affect.</p>
+      </div>
 
-      <p>
-        This site is designed as a growing portfolio. It combines a structured article series on the interpretation of school data, broader commentary on assessment and inclusion, and future data science projects focused on educational questions.
-      </p>
+      <div class="section-head">
+        <h2>About the Author</h2>
+        <div class="section-rule"></div>
+      </div>
+      <div class="about-grid">
+        <div class="about-block">
+          <h3>Teacher</h3>
+          <p>A primary school teacher with particular interests in inclusion, special educational needs, outdoor learning, and assessment that serves children rather than just measuring them.</p>
+        </div>
+        <div class="about-block">
+          <h3>Data Scientist</h3>
+          <p>Working at the intersection of data science and education, with a focus on responsible use of evidence, early identification of learning needs, and the ethical design of data-informed systems in schools.</p>
+        </div>
+      </div>
 
-      <p>
-        Across all sections, the central concern remains the same: how evidence should be interpreted carefully, how professional judgment still matters, and how data-informed systems can be designed more responsibly.
-      </p>
-
-      <h2>About the Author</h2>
-
-      <p>
-        <strong>Emmanuel Adu Amoako</strong> is a data scientist and educator interested in how data, predictive analysis, and intelligent systems can be used responsibly to support better decisions in education. His work focuses on careful interpretation, inclusive practice, practical application, and the ethical use of data-driven tools in schools.
-      </p>
     </div>
   </div>
 
   <div class="footer">
-    Education, Data Science, and Inclusive Practice
+    <strong>Emmanuel Adu Amoako</strong> &nbsp;·&nbsp; Education, Evidence and Inclusive Practice
   </div>
+
 </body>
 </html>
