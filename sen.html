@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>When Inclusion Becomes Paperwork | Kojo Amoako</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SZ14TLSKPB"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-SZ14TLSKPB');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #0f2d4a;
+      --navy2:  #1a3f61;
+      --gold:   #c9a84c;
+      --gold2:  #e8c96a;
+      --ink:    #1a1a1a;
+      --mid:    #4a5568;
+      --light:  #f5f7fa;
+      --card:   #ffffff;
+      --border: #dde4ed;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Source Serif 4', Georgia, serif;
+      background: var(--light);
+      color: var(--ink);
+      line-height: 1.9;
+    }
+
+    .hero {
+      background: var(--navy);
+      color: #fff;
+      padding: 80px 24px 95px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 80% 20%, rgba(201,168,76,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 10% 90%, rgba(26,63,97,0.6) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .hero-label {
+      display: inline-block;
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold2);
+      margin-bottom: 22px;
+      opacity: 0.95;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(32px, 5vw, 50px);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 18px;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-sub {
+      font-size: clamp(17px, 2.2vw, 20px);
+      line-height: 1.7;
+      color: rgba(255,255,255,0.84);
+      max-width: 760px;
+      font-weight: 300;
+    }
+
+    .hero-rule {
+      width: 56px;
+      height: 3px;
+      background: var(--gold);
+      margin: 30px 0 0;
+      border-radius: 2px;
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+
+    .article-card {
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(15,45,74,0.09);
+      padding: 40px 36px;
+      margin-top: -44px;
+      border-top: 4px solid var(--gold);
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 24px;
+      text-decoration: none;
+      color: var(--navy);
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .meta {
+      background: #f5f8fc;
+      border-left: 4px solid var(--navy2);
+      padding: 16px 18px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 34px;
+    }
+
+    .meta p {
+      margin: 0;
+      font-size: 17px;
+      color: var(--mid);
+      line-height: 1.7;
+    }
+
+    .article-body p {
+      font-size: 20px;
+      line-height: 1.95;
+      margin-bottom: 24px;
+      color: var(--ink);
+    }
+
+    .footer {
+      text-align: center;
+      padding: 32px 20px 24px;
+      color: var(--mid);
+      font-size: 15px;
+      border-top: 1px solid var(--border);
+      margin-top: 20px;
+    }
+
+    .footer strong {
+      color: var(--navy);
+    }
+
+    @media (max-width: 680px) {
+      .hero {
+        padding: 60px 20px 80px;
+      }
+
+      .article-card {
+        padding: 26px 18px;
+        margin-top: -30px;
+      }
+
+      .article-body p {
+        font-size: 18px;
+        line-height: 1.85;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="hero-inner">
+      <span class="hero-label">Education Commentary</span>
+      <h1>When Inclusion Becomes Paperwork</h1>
+      <p class="hero-sub">
+        On SEND, curriculum access, pupil-led learning, and what meaningful education can look like for children with complex needs.
+      </p>
+      <div class="hero-rule"></div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="article-card">
+
+      <a class="back-link" href="index.html">← Back to homepage</a>
+
+      <div class="meta">
+        <p><strong>Written by:</strong> Kojo Amoako</p>
+        <p><strong>Published:</strong> 13 April 2026</p>
+      </div>
+
+      <div class="article-body">
+        <p>
+          There is a document that follows certain children through almost their entire school life. It runs to several pages. It lists needs, targets, provision, outcomes. It is written by professionals, signed off by the local authority, reviewed annually. It is called an Education, Health and Care plan, and for many families it represents years of advocacy, assessment and waiting. For the child it describes, it is supposed to be the guarantee that their needs will be understood and met.
+        </p>
+
+        <p>
+          Then the child walks into a classroom.
+        </p>
+
+        <p>
+          What happens next is not always what the document promised. The lesson is already planned. The curriculum is already set. The teacher, committed, often genuinely skilled, almost certainly overstretched, does what they can to bring the child into what the rest of the class is doing. Adjustments are made. A TA sits nearby. The task is simplified, shortened, broken into smaller steps. And yet something does not quite fit. Because the document was written around the child, but the classroom was built around everyone else. That gap, between what an EHC plan says and what a child actually needs on a Tuesday afternoon, is what this article is about.
+        </p>
+
+        <p>
+          Let me be clear about something before going any further. Schools in this country are doing extraordinary things for children with special educational needs, often with resources that fall far short of what the job requires. SENCOs carry caseloads that would overwhelm most professionals. Teaching assistants take on levels of responsibility that are not reflected in their pay or their status. Many schools are imaginative, warm and deeply committed to the children in their care. The problem I am describing is not a problem of people. It is a problem of the framework those people are required to work inside, the legal and institutional expectation that every child, regardless of need, must access the national curriculum in some form. That expectation was written with inclusion in mind. For some children, especially those with highly complex needs, it can produce something that looks like inclusion from the outside without always feeling like it from within.
+        </p>
+
+        <p>
+          There is a child I have observed during my time in schools. I will not describe his needs in detail because that is not mine to share, but I will tell you what I have seen. He cannot speak. He does not use speech to communicate, and that is simply how he is. But he is not absent. He is not unreachable. If you point to a word and ask him whether he recognises it, he will sometimes point back to tell you that he does. He understands more than a quick glance would suggest. He is present in the room in a way that matters.
+        </p>
+
+        <p>
+          He also loves colouring. Not as a distraction, not as a way of filling time, but with real focus and care. Give him paper and pens and something shifts in him. His body settles. His attention holds. He is doing something that is his. And he loves drumming. Not loud or chaotic, but rhythmic and deliberate, the kind of drumming that tells you there is a pattern in his head that he is working out with his hands.
+        </p>
+
+        <p>
+          Now tell me: why is this child sitting through a phonics lesson?
+        </p>
+
+        <p>
+          I do not ask that as a criticism of the teacher delivering it. They have no real choice. The curriculum says phonics, the timetable says now, and so there he is. I ask it as a genuine question about what we think we are doing and who we think we are doing it for. Because the honest question is not whether phonics matters in general. Of course it does. The honest question is whether phonics, as it is currently being delivered to him, is the thing most likely to change his life. Is this where his most meaningful progress lies? Is this the door that most needs opening? Or are we asking him to spend his time accessing a lesson simply because the structure requires it, rather than because it is the route through which he is most likely to grow?
+        </p>
+
+        <p>
+          Here is what I think we get wrong when we talk about SEND children and the curriculum. We frame the conversation around access: how do we get this child to access what everyone else is learning? But for some children, with some needs, that is the wrong question entirely. The right question is: what does this child need to be able to do in order to live a good life?
+        </p>
+
+        <p>
+          And when you ask that question honestly about a non-verbal child with complex needs, the answer does not look very much like the national curriculum.
+        </p>
+
+        <p>
+          What he needs is the ability to communicate in whatever ways are available to him, whether through pointing, symbols, gesture or expression. He needs to be able to regulate himself and manage his environment as far as possible. He needs daily living skills, the practical, unglamorous things that will shape how much independence and dignity he has as an adult. And he needs things that give him pleasure. Things that keep him well. Things that give him a reason to engage with the world on his own terms.
+        </p>
+
+        <p>
+          Colouring could become art. Art could become self-expression, a way of showing the world something about who he is. It could become a source of connection with other people, a thing he does in a group, a contribution he makes to a shared space. Drumming could take him into music, into community, into the kind of rhythmic, physical activity that helps with regulation, expression and wellbeing. These are not small things. For some people they are the things that make a life worth living. For this child, what he loves now is not a distraction from his future. It may be one of the most direct routes into it.
+        </p>
+
+        <p>
+          When we insist that he must access phonics primarily because the structure requires curriculum access, we risk confusing compliance with education. We may be able to show that he was present, that provision was offered, that the lesson took place, that the box was ticked. On paper, everything may look as it should. But that is not inclusion. That is paperwork.
+        </p>
+
+        <p>
+          There is a way of thinking about learning that starts with the child rather than the content. It goes by different names, pupil-led learning, interest-based learning, child-initiated curriculum, and it is well established in Early Years education, where practitioners have long understood that children learn best when attention, motivation and meaning are present. A child absorbed in building with blocks is not just playing; they are exploring space, balance, cause and effect, persistence. A child deep in imaginative play is not avoiding learning; they are practising language, narrative, empathy and social negotiation. The learning is not absent. The route is different.
+        </p>
+
+        <p>
+          That approach rarely survives the transition into Key Stage 1. By Year 1 the curriculum takes over and the child's own interests become something to manage around the edges rather than build from. For most children, that transition, however imperfect, broadly works. For a child like the one I have described, it may not work at all, and we keep doing it anyway because the alternative requires a level of flexibility the system is not currently designed to support.
+        </p>
+
+        <p>
+          If we followed his lead, if we watched what he does, noticed what holds his attention, and built learning deliberately around those things, we would not be abandoning education. We would be practising it in the form most likely to reach him. He would be showing us where the learning lives. We would be the ones learning.
+        </p>
+
+        <p>
+          The legal framework makes this genuinely complicated. The Children and Families Act 2014 places duties on schools around SEN provision and inclusion, and the wider system is built on the principle that children with additional needs should not be denied access to a broad and balanced education. That principle was written with the best of intentions. It was designed to stop children from being sidelined, written off, or given a lesser version of schooling simply because it was easier. Those are real risks, and they still exist. But the same framework that was designed to protect children like him can also trap them, locking them into a version of school that was not designed for them and cannot always be made to fit, no matter how much goodwill and effort is applied to the problem.
+        </p>
+
+        <p>
+          Performative inclusion is still exclusion. A child who is physically present in a phonics lesson but gaining little from it that is meaningful to him has not truly been included. He has been managed. There is a difference, and we owe it to these children to say so plainly.
+        </p>
+
+        <p>
+          The boy I described is already learning. Every time he picks up a colouring pen he is developing fine motor control, concentration and the ability to make deliberate choices. Every time he drums he is building rhythm, sequencing and the kind of focused physical engagement that can support regulation and emotional wellbeing. Every time he points to a word he is communicating, which is one of the most fundamental educational acts there is. None of this shows up neatly on a phonics assessment. All of it is education.
+        </p>
+
+        <p>
+          What would it look like if we organised his school day around those things rather than around the parts of the curriculum he is least able to access meaningfully? What would it look like if his EHC plan included, alongside all its targets and provision and outcomes, one simple question: what does this child love, and how do we build from there?
+        </p>
+
+        <p>
+          It would look like a child who is learning. Not in the way the timetable most easily recognises. Not in the way the paperwork can most easily evidence. In the way that is his. And if education cannot make room for that, then the problem is not the child. It is our idea of schooling.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <strong>Kojo Amoako</strong> &nbsp;·&nbsp; Education, Evidence and Inclusive Practice
+  </div>
+
+</body>
+</html>
