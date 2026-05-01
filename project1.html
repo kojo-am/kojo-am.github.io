@@ -226,6 +226,30 @@
       margin-bottom: 20px;
     }
 
+    .info-box {
+      background: #f8f9fb;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 8px 8px 0;
+      padding: 18px 22px;
+      margin: 26px 0 30px;
+    }
+
+    .info-box p {
+      font-size: 16px !important;
+      color: var(--ink) !important;
+      line-height: 1.7 !important;
+      margin: 0 0 10px !important;
+    }
+
+    .info-box p:last-child {
+      margin-bottom: 0 !important;
+    }
+
+    .info-box strong {
+      color: var(--navy);
+    }
+
     .pullquote {
       border-left: 4px solid var(--gold);
       margin: 32px 0;
@@ -512,7 +536,7 @@
       <div class="hero-meta">
         <span><strong>43,513</strong> school-year records analysed</span>
         <span><strong>5</strong> models built</span>
-        <span><strong>2022–2024</strong> data</span>
+        <span><strong>2021/22–2023/24</strong> data</span>
         <span>DfE open data</span>
       </div>
     </div>
@@ -553,8 +577,25 @@
       </p>
 
       <p>
-        All data used in this analysis comes from publicly available Department for Education publications. KS2 school performance tables covering 2022 to 2024, school-level absence data for the same period, school funding allocation data, and school characteristics data were cleaned, merged on school URN and year where appropriate, and combined into a working dataset of 43,513 school-year records after removing suppressed data and extreme edge cases.
+        All data used in this analysis comes from publicly available Department for Education publications. KS2 school performance tables covering the 2021/22, 2022/23 and 2023/24 academic years, school-level absence data for the same period, school funding allocation data, and school characteristics data were cleaned, merged on school URN and year where appropriate, and combined into a working dataset of 43,513 school-year records after removing suppressed data and extreme edge cases.
       </p>
+
+      <h2>Method in brief</h2>
+
+      <div class="info-box">
+        <p>
+          <strong>Unit of analysis:</strong> This project uses school-level records only. No individual pupil data is used.
+        </p>
+        <p>
+          <strong>Outcome variable:</strong> The model focuses on KS2 attainment outcomes at school level.
+        </p>
+        <p>
+          <strong>Predictors:</strong> The clean model uses absence rate, persistent absence rate, pupil premium proportion, school size, school category and education phase.
+        </p>
+        <p>
+          <strong>Purpose:</strong> The aim is not to rank schools or make individual judgements, but to test what public data can and cannot explain.
+        </p>
+      </div>
     </div>
 
     <div class="chart-section">
@@ -569,6 +610,15 @@
       <div class="chart-title">Full model comparison</div>
       <div class="chart-subtitle">
         All three accuracy metrics across all five models. MAE means mean absolute error in percentage points.
+      </div>
+
+      <div class="info-box">
+        <p>
+          <strong>How to read the results:</strong> R² shows how much variation in school outcomes the model explains. MAE shows the average prediction error in percentage points. RMSE also measures error, but gives more weight to larger mistakes.
+        </p>
+        <p>
+          A higher R² is not automatically better if the model is using variables that partly encode the outcome it is trying to predict. That is why the clean Model 5 is treated as the most honest result, even though its R² is lower.
+        </p>
       </div>
 
       <table class="model-table">
@@ -744,6 +794,10 @@
       <p>
         A model built on what can be measured will always miss some of what matters. This is not an argument against data. It is an argument for understanding what data can and cannot see.
       </p>
+
+      <p>
+        This project sits alongside the wider article series on school data because it makes the same argument in technical form: data can reveal important patterns, but it cannot interpret itself. The value of modelling is not only in prediction, but in showing where prediction breaks down — and why professional judgement remains necessary.
+      </p>
     </div>
 
     <div class="warning-box">
@@ -754,7 +808,7 @@
 
     <div class="data-note">
       <div class="comment"># Data sources</div>
-      KS2 school performance tables: 2021-22, 2022-23, 2023-24<br>
+      KS2 school performance tables: 2021/22, 2022/23, 2023/24<br>
       Pupil absence data: school level<br>
       School funding allocations<br>
       School characteristics: Department for Education schools, pupils and their characteristics data<br>
