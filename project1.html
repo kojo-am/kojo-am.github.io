@@ -1,1 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What Can Data Actually Tell Us About School Performance? — Kojo Amoako</title>
 
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SZ14TLSKPB"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-SZ14TLSKPB');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --navy: #0f2d4a;
+      --navy2: #1a3f61;
+      --gold: #c9a84c;
+      --gold2: #e8c96a;
+      --ink: #1a1a1a;
+      --mid: #4a5568;
+      --light: #f5f7fa;
+      --card: #ffffff;
+      --border: #dde4ed;
+      --code-bg: #f0f4f8;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Source Serif 4', Georgia, serif;
+      background: var(--light);
+      color: var(--ink);
+      line-height: 1.8;
+    }
+
+    .nav {
+      background: var(--navy);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    }
+
+    .nav a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.15s;
+    }
+
+    .nav a:hover {
+      color: var(--gold2);
+    }
+
+    .nav-home {
+      color: var(--gold2) !important;
+      font-weight: 600;
+    }
+
+    .nav-sep {
+      color: rgba(255,255,255,0.3);
+    }
+
+    .hero {
+      background: var(--navy);
+      padding: 72px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 85% 15%, rgba(201,168,76,0.1) 0%, transparent 55%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 820px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: rgba(201,168,76,0.15);
+      border: 1px solid rgba(201,168,76,0.4);
+      color: var(--gold2);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 3px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(30px, 4.5vw, 48px);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+    }
+
+    .hero h1 em {
+      color: var(--gold2);
+      font-style: normal;
+    }
+
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 19px);
+      color: rgba(255,255,255,0.72);
+      max-width: 660px;
+      font-weight: 300;
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .hero-meta span {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .hero-meta span strong {
+      color: rgba(255,255,255,0.85);
+    }
+
+    .page {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: -36px 0 40px;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 20px 18px;
+      box-shadow: 0 6px 20px rgba(15,45,74,0.1);
+      border-top: 3px solid var(--gold);
+      text-align: center;
+    }
+
+    .stat-card .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--navy);
+      display: block;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-card .label {
+      font-size: 13px;
+      color: var(--mid);
+      line-height: 1.4;
+    }
+
+    .prose {
+      margin-bottom: 48px;
+    }
+
+    .prose h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 3vw, 28px);
+      color: var(--navy);
+      margin: 48px 0 16px;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .prose h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      color: var(--navy2);
+      margin: 32px 0 12px;
+      font-weight: 600;
+    }
+
+    .prose p {
+      font-size: 18px;
+      line-height: 1.82;
+      color: var(--ink);
+      margin-bottom: 20px;
+    }
+
+    .pullquote {
+      border-left: 4px solid var(--gold);
+      margin: 32px 0;
+      padding: 20px 24px;
+      background: linear-gradient(135deg, rgba(201,168,76,0.06), rgba(201,168,76,0.02));
+      border-radius: 0 8px 8px 0;
+    }
+
+    .pullquote p {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px !important;
+      font-style: italic;
+      color: var(--navy) !important;
+      line-height: 1.6 !important;
+      margin: 0 !important;
+    }
+
+    .warning-box {
+      background: #fef9ec;
+      border: 1px solid #f0c040;
+      border-left: 4px solid #c9a84c;
+      border-radius: 0 8px 8px 0;
+      padding: 18px 22px;
+      margin: 28px 0;
+    }
+
+    .warning-box p {
+      font-size: 16px !important;
+      color: #5a4200 !important;
+      margin: 0 !important;
+    }
+
+    .warning-box strong {
+      color: #7a5800;
+    }
+
+    .chart-section {
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: 0 6px 24px rgba(15,45,74,0.08);
+      padding: 32px;
+      margin: 40px 0;
+      border-top: 3px solid var(--gold);
+    }
+
+    .chart-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      color: var(--navy);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .chart-subtitle {
+      font-size: 14px;
+      color: var(--mid);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    canvas {
+      display: block;
+      width: 100% !important;
+    }
+
+    .model-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+      margin: 24px 0;
+    }
+
+    .model-table th {
+      background: var(--navy);
+      color: #fff;
+      padding: 12px 14px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+    }
+
+    .model-table td {
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--ink);
+    }
+
+    .model-table tr:nth-child(even) td {
+      background: #f8f9fb;
+    }
+
+    .model-table tr.highlight td {
+      background: rgba(201,168,76,0.08);
+      font-weight: 600;
+    }
+
+    .model-table tr.highlight td:first-child {
+      border-left: 3px solid var(--gold);
+    }
+
+    .r2-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .r2-fill {
+      height: 8px;
+      border-radius: 4px;
+      background: var(--navy);
+      min-width: 4px;
+    }
+
+    .r2-fill.gold {
+      background: var(--gold);
+    }
+
+    .r2-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--mid);
+    }
+
+    .fi-bar-wrap {
+      margin: 8px 0;
+    }
+
+    .fi-label {
+      font-size: 13px;
+      color: var(--ink);
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .fi-label span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--mid);
+    }
+
+    .fi-track {
+      height: 10px;
+      background: var(--border);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .fi-fill {
+      height: 100%;
+      border-radius: 5px;
+      background: var(--navy);
+    }
+
+    .fi-fill.light {
+      background: #b0bec5;
+    }
+
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .insight-card {
+      background: #f8f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 16px;
+    }
+
+    .insight-card strong {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      color: var(--navy);
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+
+    .insight-card span {
+      display: block;
+      color: var(--mid);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .data-note {
+      background: var(--code-bg);
+      border-radius: 8px;
+      padding: 18px 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #344;
+      margin: 24px 0;
+      border-left: 3px solid var(--navy2);
+    }
+
+    .data-note .comment {
+      color: #7a8a9a;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 32px 20px 24px;
+      color: var(--mid);
+      font-size: 15px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer strong {
+      color: var(--navy);
+    }
+
+    .footer a {
+      color: var(--navy2);
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 640px) {
+      .stat-row {
+        grid-template-columns: 1fr;
+        margin-top: -20px;
+      }
+
+      .chart-section {
+        padding: 20px 16px;
+      }
+
+      .hero {
+        padding: 52px 20px 60px;
+      }
+
+      .model-table {
+        font-size: 13px;
+      }
+
+      .model-table th,
+      .model-table td {
+        padding: 9px 10px;
+      }
+
+      .insight-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav {
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-home">Kojo Amoako</a>
+    <span class="nav-sep">/</span>
+    <a href="index.html">Home</a>
+    <span class="nav-sep">/</span>
+    <a href="project1.html">Data Science Project 1</a>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-inner">
+      <span class="hero-tag">Education Data Science Project — Project 1</span>
+      <h1>What Can Data <em>Actually</em> Tell Us<br>About School Performance?</h1>
+      <p class="hero-sub">
+        A five-model investigation into KS2 outcomes across English primary schools — and what the gap between the best model and reality reveals about the limits of data.
+      </p>
+      <div class="hero-meta">
+        <span><strong>43,513</strong> school-year records analysed</span>
+        <span><strong>5</strong> models built</span>
+        <span><strong>2022–2024</strong> data</span>
+        <span>DfE open data</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <span class="num">0.38</span>
+        <span class="label">Best R² achieved<br>with all variables</span>
+      </div>
+
+      <div class="stat-card">
+        <span class="num">0.24</span>
+        <span class="label">R² with clean,<br>independent variables only</span>
+      </div>
+
+      <div class="stat-card">
+        <span class="num">76%</span>
+        <span class="label">Variation not explained<br>by the clean model</span>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>
+        There is a version of this project that would have been straightforward to write. Build a model, get a reasonable accuracy score, present it as evidence that school outcomes are predictable, and move on. This is not that version.
+      </p>
+
+      <p>
+        What the analysis below shows is more interesting and more honest than a high-performing model would have been. It shows how much of what determines a school's results is invisible to public data, how easily a model can appear more powerful than it genuinely is depending on what variables it is given, and why the gap between what a model sees and what actually matters is the most important result in the whole project.
+      </p>
+
+      <h2>The question</h2>
+
+      <p>
+        Can we predict a school's KS2 attainment outcomes using publicly available data? And if we can, what does that tell us — and what does it not tell us — about what is actually happening in those schools?
+      </p>
+
+      <p>
+        All data used in this analysis comes from publicly available Department for Education publications. KS2 school performance tables covering 2022 to 2024, school-level absence data for the same period, school funding allocation data, and school characteristics data were cleaned, merged on school URN and year where appropriate, and combined into a working dataset of 43,513 school-year records after removing suppressed data and extreme edge cases.
+      </p>
+    </div>
+
+    <div class="chart-section">
+      <div class="chart-title">Five models, one question</div>
+      <div class="chart-subtitle">
+        R² score across five progressively refined models. Higher means more variation in KS2 outcomes explained. The drop from Model 4 to Model 5 is the most important result in this project.
+      </div>
+      <canvas id="modelChart" height="220"></canvas>
+    </div>
+
+    <div class="chart-section">
+      <div class="chart-title">Full model comparison</div>
+      <div class="chart-subtitle">
+        All three accuracy metrics across all five models. MAE means mean absolute error in percentage points.
+      </div>
+
+      <table class="model-table">
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th>R²</th>
+            <th>MAE</th>
+            <th>RMSE</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Model 1 — Baseline linear regression</td>
+            <td>
+              <div class="r2-bar">
+                <div class="r2-fill" style="width:37px"></div>
+                <span class="r2-val">0.185</span>
+              </div>
+            </td>
+            <td>10.9 pp</td>
+            <td>14.0</td>
+          </tr>
+
+          <tr>
+            <td>Model 2 — Expanded linear regression</td>
+            <td>
+              <div class="r2-bar">
+                <div class="r2-fill" style="width:52px"></div>
+                <span class="r2-val">0.262</span>
+              </div>
+            </td>
+            <td>10.3 pp</td>
+            <td>13.3</td>
+          </tr>
+
+          <tr>
+            <td>Model 3 — Random Forest</td>
+            <td>
+              <div class="r2-bar">
+                <div class="r2-fill" style="width:72px"></div>
+                <span class="r2-val">0.362</span>
+              </div>
+            </td>
+            <td>9.5 pp</td>
+            <td>12.4</td>
+          </tr>
+
+          <tr>
+            <td>Model 4 — Random Forest, no extremes</td>
+            <td>
+              <div class="r2-bar">
+                <div class="r2-fill" style="width:76px"></div>
+                <span class="r2-val">0.380</span>
+              </div>
+            </td>
+            <td>9.3 pp</td>
+            <td>11.9</td>
+          </tr>
+
+          <tr class="highlight">
+            <td>Model 5 — Clean variables only ★</td>
+            <td>
+              <div class="r2-bar">
+                <div class="r2-fill gold" style="width:48px"></div>
+                <span class="r2-val">0.238</span>
+              </div>
+            </td>
+            <td>10.5 pp</td>
+            <td>13.2</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:13px;color:var(--mid);margin-top:8px;">
+        ★ Model 5 uses only genuinely independent variables and removes funding allocation proxies that risk encoding prior attainment.
+      </p>
+    </div>
+
+    <div class="prose">
+      <h2>Why Model 5 is the most honest result</h2>
+
+      <p>
+        Models 3 and 4 achieved R² scores of 0.36 and 0.38 respectively. That looks reasonable. But those models included variables such as prior attainment funding per pupil — funding linked to a school's historical attainment profile.
+      </p>
+
+      <p>
+        In other words, the model was partly using a variable that already carried information about prior performance to predict current performance. That is a form of circular reasoning. The model was not simply discovering that prior attainment matters. It was being handed a proxy for prior attainment and unsurprisingly finding it useful.
+      </p>
+
+      <div class="pullquote">
+        <p>
+          Removing those circular variables dropped the R² from 0.38 to 0.24. That gap is not a failure of the clean model. It is a demonstration of how easily a model can appear more powerful than it actually is.
+        </p>
+      </div>
+
+      <p>
+        Model 5 uses cleaner variables that do not directly encode prior attainment: absence rate, persistent absence rate, pupil premium proportion, school size, school category, and education phase. With these genuinely independent variables, the model explains 24% of the variation in KS2 outcomes. The remaining 76% is not explained by the public variables used in this clean model.
+      </p>
+    </div>
+
+    <div class="chart-section">
+      <div class="chart-title">What actually predicts outcomes — Model 5 feature importance</div>
+      <div class="chart-subtitle">
+        How much each variable contributed to the model's predictive power. School category and education phase together account for a small share of the signal.
+      </div>
+
+      <div id="fi-bars"></div>
+    </div>
+
+    <div class="prose">
+      <h2>Three things the feature importance is telling us</h2>
+
+      <h3>Absence is the dominant signal</h3>
+
+      <p>
+        Absence rate and persistent absence rate together account for over half of the model's predictive power. That is striking, but it is not simply saying that pupils who miss school do worse. At school level, it suggests that a school's overall absence profile is one of the strongest available public signals of its attainment outcomes.
+      </p>
+
+      <p>
+        This does not mean that schools with high absence are failing. It may mean they are serving communities with higher deprivation, significant health needs, housing instability, or other factors that drive both absence and attainment patterns simultaneously. The model cannot tell the difference.
+      </p>
+
+      <h3>School type adds little predictive power</h3>
+
+      <p>
+        Whether a school is a community school, an academy, a free school, or a voluntary aided school adds very little predictive signal once absence, deprivation and school size are already included. That does not settle wider debates about school structures, but it does suggest that school type alone is a weak explanation for KS2 attainment differences in this model.
+      </p>
+
+      <h3>Deprivation and size carry substantial weight</h3>
+
+      <p>
+        Pupil premium proportion and school size each carry substantial predictive weight. The school size finding matters because small schools are inherently more volatile. A cohort of fifteen pupils where three are persistently absent looks very different statistically from a school of three hundred pupils with the same rate. A model can struggle to represent that human and statistical context properly.
+      </p>
+    </div>
+
+    <div class="chart-section">
+      <div class="chart-title">The prediction gap matters</div>
+      <div class="chart-subtitle">
+        The clean model is useful for understanding broad patterns, but it is not accurate enough to judge individual schools.
+      </div>
+
+      <div class="insight-grid">
+        <div class="insight-card">
+          <strong>10.5 pp</strong>
+          <span>Average absolute error in Model 5. On average, the prediction is around ten percentage points away from the actual KS2 result.</span>
+        </div>
+
+        <div class="insight-card">
+          <strong>13.2</strong>
+          <span>RMSE for Model 5, showing that some prediction errors are meaningfully larger than the average error.</span>
+        </div>
+
+        <div class="insight-card">
+          <strong>24%</strong>
+          <span>Share of variation explained by the clean model. The majority of variation remains outside the model's view.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <h2>What 76% unexplained variation means</h2>
+
+      <p>
+        Even the clean model explains only 24% of the variation in KS2 outcomes across the school-year records used in this analysis. The remaining 76% is not explained by the variables included in the clean model.
+      </p>
+
+      <p>
+        That is not a methodological failure. It is an accurate reflection of how complex school performance actually is. The things that most powerfully shape what happens in a school — the quality of teaching, the consistency of leadership over time, what a particular cohort experienced in their early years, relationships between teachers and families, local community pressures, pupil mobility, and many forms of need — are not captured well in public datasets. Some may not be fully capturable in data at all.
+      </p>
+
+      <p>
+        A model built on what can be measured will always miss some of what matters. This is not an argument against data. It is an argument for understanding what data can and cannot see.
+      </p>
+    </div>
+
+    <div class="warning-box">
+      <p>
+        <strong>What this model should never be used to do.</strong> A model that explains 24% of outcome variation and is on average around 10 percentage points from the actual result should not be used to make judgements about individual schools. It should not flag schools for intervention, rank schools, or draw conclusions about teaching quality. It should not be used to predict individual pupil outcomes. The purpose of building it is to understand what the available data can and cannot tell us — not to act on its outputs as if they were ground truth.
+      </p>
+    </div>
+
+    <div class="data-note">
+      <div class="comment"># Data sources</div>
+      KS2 school performance tables: 2021-22, 2022-23, 2023-24<br>
+      Pupil absence data: school level<br>
+      School funding allocations<br>
+      School characteristics: Department for Education schools, pupils and their characteristics data<br>
+      <div class="comment"># Merge key: school_urn + year where appropriate</div>
+      <div class="comment"># All analysis at school level — no individual pupil data used</div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <strong>Kojo Amoako</strong> &nbsp;·&nbsp; <a href="index.html">Education, Evidence and Inclusive Practice</a>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+  <script>
+    const modelCtx = document.getElementById('modelChart').getContext('2d');
+
+    const modelR2 = [0.185, 0.262, 0.362, 0.380, 0.238];
+
+    const modelColors = [
+      'rgba(15,45,74,0.7)',
+      'rgba(15,45,74,0.75)',
+      'rgba(15,45,74,0.82)',
+      'rgba(15,45,74,0.9)',
+      'rgba(201,168,76,0.85)'
+    ];
+
+    new Chart(modelCtx, {
+      type: 'bar',
+      data: {
+        labels: [
+          'Baseline Linear',
+          'Expanded Linear',
+          'Random Forest',
+          'RF no extremes',
+          'Clean vars ★'
+        ],
+        datasets: [{
+          data: modelR2,
+          backgroundColor: modelColors,
+          borderColor: modelColors.map(c => c.replace(/[\d.]+\)$/, '1)')),
+          borderWidth: 1,
+          borderRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: ctx => `R² = ${ctx.raw.toFixed(3)} — explains about ${Math.round(ctx.raw * 100)}% of variation`
+            }
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            max: 0.5,
+            grid: { color: 'rgba(0,0,0,0.06)' },
+            ticks: {
+              callback: v => v.toFixed(2),
+              font: { family: 'JetBrains Mono', size: 11 }
+            },
+            title: {
+              display: true,
+              text: 'R² score',
+              font: { family: 'Source Serif 4', size: 13 },
+              color: '#4a5568'
+            }
+          },
+          x: {
+            grid: { display: false },
+            ticks: {
+              font: { family: 'Source Serif 4', size: 12 },
+              color: '#1a1a1a'
+            }
+          }
+        },
+        animation: {
+          duration: 900,
+          easing: 'easeOutQuart'
+        }
+      }
+    });
+
+    const fiData = [
+      { label: 'Absence rate', val: 0.271, type: 'main' },
+      { label: 'Persistent absence rate', val: 0.262, type: 'main' },
+      { label: 'Pupil premium proportion', val: 0.201, type: 'main' },
+      { label: 'School size', val: 0.201, type: 'main' },
+      { label: 'School category: Community school', val: 0.017, type: 'low' },
+      { label: 'School category: Voluntary aided', val: 0.013, type: 'low' },
+      { label: 'School category: Academy', val: 0.012, type: 'low' },
+      { label: 'School category: Voluntary controlled', val: 0.011, type: 'low' },
+      { label: 'School category: Foundation', val: 0.006, type: 'low' },
+      { label: 'School category: Free school', val: 0.004, type: 'low' },
+      { label: 'Education phase', val: 0.002, type: 'low' }
+    ];
+
+    const maxVal = Math.max(...fiData.map(d => d.val));
+    const fiBars = document.getElementById('fi-bars');
+
+    fiData.forEach(d => {
+      const pct = (d.val / maxVal * 100).toFixed(1);
+      const fillClass = d.type === 'main' ? '' : 'light';
+      const valPct = (d.val * 100).toFixed(1);
+
+      fiBars.innerHTML += `
+        <div class="fi-bar-wrap">
+          <div class="fi-label">${d.label}<span>${valPct}%</span></div>
+          <div class="fi-track">
+            <div class="fi-fill ${fillClass}" style="width:${pct}%"></div>
+          </div>
+        </div>
+      `;
+    });
+  </script>
+
+</body>
+</html>
