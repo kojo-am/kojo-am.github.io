@@ -98,6 +98,14 @@
     .data-note { background: #f0f4f8; border-radius: 8px; padding: 16px 18px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7; color: #344; margin: 24px 0; border-left: 3px solid var(--navy2); }
     .comment { color: #7a8a9a; }
 
+
+    /* INTERACTIVE MAP */
+    .map-controls { display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0 16px; align-items: center; }
+    .map-controls label { font-size: 13px; color: var(--mid); font-weight: 600; }
+    .map-controls select { padding: 9px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; font-family: 'Source Serif 4', serif; outline: none; color: var(--ink); background: #fff; }
+    #interactiveMap { width: 100%; height: 640px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); background: #f8f9fb; }
+    #mapStatus { font-size: 13px; color: var(--mid); margin-top: 10px; line-height: 1.5; }
+
     /* TOOLTIP */
     #tt { position: fixed; background: rgba(15,45,74,0.95); color: #fff; padding: 10px 14px; border-radius: 8px; font-size: 12px; pointer-events: none; display: none; max-width: 240px; line-height: 1.6; z-index: 999; box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
     #tt strong { color: var(--gold2); display: block; margin-bottom: 3px; font-size: 13px; }
@@ -173,6 +181,26 @@
     </div>
   </div>
 
+
+  <!-- INTERACTIVE CHOROPLETH MAP -->
+  <div class="chart-section">
+    <div class="chart-title">Interactive map of educational inequality across England</div>
+    <div class="chart-sub">Use the dropdown to switch between indicators. Hover over any local authority to compare attainment, disadvantage, absence, SEND and EAL outcomes.</div>
+    <div class="map-controls">
+      <label for="mapMetric">Map indicator:</label>
+      <select id="mapMetric" onchange="updateInteractiveMap()">
+        <option value="ks2">Overall KS2 attainment</option>
+        <option value="disadv">Disadvantaged pupil attainment</option>
+        <option value="gap">Disadvantage attainment gap</option>
+        <option value="absence">Persistent absence</option>
+        <option value="sen_gap">SEND attainment gap</option>
+        <option value="eal_diff">EAL attainment difference</option>
+      </select>
+    </div>
+    <div id="interactiveMap"></div>
+    <div id="mapStatus">Loading local authority boundary map…</div>
+  </div>
+
   <!-- SCATTER: ABSENCE vs ATTAINMENT -->
   <div class="chart-section">
     <div class="chart-title">Absence versus overall KS2 attainment by local authority</div>
@@ -199,6 +227,7 @@
   <div class="prose">
     <p>The scatter above reveals something counterintuitive. There is a positive correlation between overall attainment and the size of the disadvantage gap — meaning that LAs with higher overall KS2 outcomes tend to have larger gaps between their disadvantaged pupils and the rest. Wokingham, Richmond upon Thames, York, and Bath and North East Somerset all appear in the top ten for the largest disadvantage gaps, yet all have above-average overall attainment.</p>
     <p>The explanation is that in high-attaining, relatively affluent LAs, non-disadvantaged pupils perform very well, which mechanically increases the gap even if disadvantaged pupils are also performing reasonably. In deprived urban LAs, both groups face similar pressures and both tend to perform closer together — but at a lower overall level. The gap metric, taken in isolation, can therefore mislead: a small gap in a low-attaining LA is not the same as a small gap in a high-attaining one.</p>
+    <p>The strongest counterintuitive correlation in the dataset is between persistent absence and the disadvantage attainment gap, which is approximately -0.68. At first glance, this appears wrong: one might expect areas with higher absence to have larger disadvantage gaps. But the pattern reflects how deprivation operates at local authority level. In many deprived urban authorities, absence is high for both disadvantaged and non-disadvantaged pupils, which compresses the measured gap between the two groups. By contrast, in more affluent authorities, non-disadvantaged pupils often perform especially strongly, making the gap appear larger even when disadvantaged pupils are not necessarily performing very poorly. The negative correlation therefore does not mean absence is harmless; it means the gap measure is shaped by both sides of the comparison.</p>
 
     <div class="pullquote"><p>Newham has a disadvantage gap of 3 percentage points. Its disadvantaged pupils achieve 73% — which is 10 percentage points above the national average for all pupils. That is not a small gap at a low level. That is a small gap at a high level, and it is the most unusual combination in the dataset.</p></div>
 
@@ -287,8 +316,178 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
 <script>
 const DATA = [{"code":"E10000016","la":"Kent","region":"South East","pupils":18853,"ks2":62.0,"disadv":43.0,"gap":19.0,"absence":14.55,"severe":1.06,"sen_pct":23.0,"sen_gap":39.0,"eal_pct":69.0,"eal_diff":7.0},{"code":"E08000035","la":"Leeds","region":"Yorkshire and The Humber","pupils":10077,"ks2":61.0,"disadv":44.0,"gap":17.0,"absence":14.28,"severe":0.99,"sen_pct":24.0,"sen_gap":37.0,"eal_pct":59.0,"eal_diff":-2.0},{"code":"E09000002","la":"Barking and Dagenham","region":"London","pupils":3297,"ks2":67.0,"disadv":59.0,"gap":8.0,"absence":16.1,"severe":0.91,"sen_pct":25.0,"sen_gap":42.0,"eal_pct":69.0,"eal_diff":2.0},{"code":"E06000016","la":"Leicester","region":"East Midlands","pupils":4875,"ks2":60.0,"disadv":52.0,"gap":8.0,"absence":15.92,"severe":1.33,"sen_pct":21.0,"sen_gap":39.0,"eal_pct":62.0,"eal_diff":2.0},{"code":"E08000014","la":"Sefton","region":"North West","pupils":3117,"ks2":58.0,"disadv":40.0,"gap":18.0,"absence":13.46,"severe":0.71,"sen_pct":23.0,"sen_gap":35.0,"eal_pct":53.0,"eal_diff":-5.0},{"code":"E10000032","la":"West Sussex","region":"South East","pupils":9380,"ks2":60.0,"disadv":40.0,"gap":20.0,"absence":11.71,"severe":0.83,"sen_pct":21.0,"sen_gap":39.0,"eal_pct":63.0,"eal_diff":3.0},{"code":"E06000008","la":"Blackburn with Darwen","region":"North West","pupils":2210,"ks2":63.0,"disadv":51.0,"gap":12.0,"absence":13.98,"severe":1.04,"sen_pct":26.0,"sen_gap":37.0,"eal_pct":71.0,"eal_diff":8.0},{"code":"E08000003","la":"Manchester","region":"North West","pupils":7243,"ks2":58.0,"disadv":51.0,"gap":7.0,"absence":15.43,"severe":1.18,"sen_pct":21.0,"sen_gap":37.0,"eal_pct":60.0,"eal_diff":2.0},{"code":"E10000028","la":"Staffordshire","region":"West Midlands","pupils":9835,"ks2":62.0,"disadv":44.0,"gap":18.0,"absence":10.27,"severe":0.61,"sen_pct":19.0,"sen_gap":43.0,"eal_pct":67.0,"eal_diff":5.0},{"code":"E10000008","la":"Devon","region":"South West","pupils":8100,"ks2":57.0,"disadv":38.0,"gap":19.0,"absence":10.99,"severe":0.93,"sen_pct":21.0,"sen_gap":36.0,"eal_pct":58.0,"eal_diff":1.0},{"code":"E10000024","la":"Nottinghamshire","region":"East Midlands","pupils":9816,"ks2":64.0,"disadv":46.0,"gap":18.0,"absence":11.45,"severe":0.84,"sen_pct":22.0,"sen_gap":42.0,"eal_pct":66.0,"eal_diff":2.0},{"code":"E10000030","la":"Surrey","region":"South East","pupils":12712,"ks2":66.0,"disadv":40.0,"gap":26.0,"absence":10.76,"severe":0.92,"sen_pct":25.0,"sen_gap":41.0,"eal_pct":70.0,"eal_diff":4.0},{"code":"E06000056","la":"Central Bedfordshire","region":"East of England","pupils":3688,"ks2":50.0,"disadv":26.0,"gap":24.0,"absence":11.31,"severe":1.19,"sen_pct":16.0,"sen_gap":34.0,"eal_pct":61.0,"eal_diff":11.0},{"code":"E10000017","la":"Lancashire","region":"North West","pupils":14289,"ks2":60.0,"disadv":42.0,"gap":18.0,"absence":12.35,"severe":0.78,"sen_pct":19.0,"sen_gap":41.0,"eal_pct":60.0,"eal_diff":0.0},{"code":"E06000060","la":"Buckinghamshire","region":"South East","pupils":6476,"ks2":65.0,"disadv":43.0,"gap":22.0,"absence":12.05,"severe":1.01,"sen_pct":24.0,"sen_gap":41.0,"eal_pct":68.0,"eal_diff":3.0},{"code":"E06000006","la":"Halton","region":"North West","pupils":1473,"ks2":62.0,"disadv":49.0,"gap":13.0,"absence":14.72,"severe":0.51,"sen_pct":27.0,"sen_gap":35.0,"eal_pct":70.0,"eal_diff":8.0},{"code":"E10000012","la":"Essex","region":"East of England","pupils":17484,"ks2":63.0,"disadv":44.0,"gap":19.0,"absence":13.07,"severe":0.96,"sen_pct":23.0,"sen_gap":40.0,"eal_pct":67.0,"eal_diff":4.0},{"code":"E08000011","la":"Knowsley","region":"North West","pupils":1874,"ks2":61.0,"disadv":50.0,"gap":11.0,"absence":19.69,"severe":0.87,"sen_pct":28.0,"sen_gap":33.0,"eal_pct":67.0,"eal_diff":6.0},{"code":"E06000021","la":"Stoke-on-Trent","region":"West Midlands","pupils":3454,"ks2":59.0,"disadv":50.0,"gap":9.0,"absence":13.4,"severe":0.92,"sen_pct":16.0,"sen_gap":43.0,"eal_pct":59.0,"eal_diff":0.0},{"code":"E06000040","la":"Windsor and Maidenhead","region":"South East","pupils":1558,"ks2":63.0,"disadv":39.0,"gap":24.0,"absence":11.93,"severe":1.05,"sen_pct":28.0,"sen_gap":35.0,"eal_pct":61.0,"eal_diff":-2.0},{"code":"E08000015","la":"Wirral","region":"North West","pupils":3783,"ks2":56.0,"disadv":40.0,"gap":16.0,"absence":14.55,"severe":0.83,"sen_pct":24.0,"sen_gap":32.0,"eal_pct":60.0,"eal_diff":4.0},{"code":"E08000032","la":"Bradford","region":"Yorkshire and The Humber","pupils":7852,"ks2":60.0,"disadv":48.0,"gap":12.0,"absence":16.24,"severe":1.11,"sen_pct":25.0,"sen_gap":35.0,"eal_pct":60.0,"eal_diff":0.0},{"code":"E06000015","la":"Derby","region":"East Midlands","pupils":3537,"ks2":57.0,"disadv":43.0,"gap":14.0,"absence":15.01,"severe":1.04,"sen_pct":21.0,"sen_gap":36.0,"eal_pct":55.0,"eal_diff":-2.0},{"code":"E06000055","la":"Bedford","region":"East of England","pupils":2354,"ks2":57.0,"disadv":41.0,"gap":16.0,"absence":12.3,"severe":1.05,"sen_pct":15.0,"sen_gap":42.0,"eal_pct":58.0,"eal_diff":1.0},{"code":"E09000029","la":"Sutton","region":"London","pupils":2625,"ks2":72.0,"disadv":53.0,"gap":19.0,"absence":11.01,"severe":0.61,"sen_pct":30.0,"sen_gap":42.0,"eal_pct":80.0,"eal_diff":8.0},{"code":"E09000027","la":"Richmond upon Thames","region":"London","pupils":2242,"ks2":78.0,"disadv":50.0,"gap":28.0,"absence":8.59,"severe":0.61,"sen_pct":33.0,"sen_gap":45.0,"eal_pct":79.0,"eal_diff":1.0},{"code":"E08000028","la":"Sandwell","region":"West Midlands","pupils":4865,"ks2":61.0,"disadv":50.0,"gap":11.0,"absence":15.51,"severe":1.03,"sen_pct":19.0,"sen_gap":42.0,"eal_pct":66.0,"eal_diff":5.0},{"code":"E08000018","la":"Rotherham","region":"Yorkshire and The Humber","pupils":3328,"ks2":60.0,"disadv":43.0,"gap":17.0,"absence":14.44,"severe":1.15,"sen_pct":24.0,"sen_gap":36.0,"eal_pct":54.0,"eal_diff":-6.0},{"code":"E09000017","la":"Hillingdon","region":"London","pupils":3833,"ks2":67.0,"disadv":49.0,"gap":18.0,"absence":15.79,"severe":1.04,"sen_pct":28.0,"sen_gap":39.0,"eal_pct":68.0,"eal_diff":1.0},{"code":"E06000031","la":"Peterborough","region":"East of England","pupils":3213,"ks2":61.0,"disadv":50.0,"gap":11.0,"absence":13.64,"severe":0.88,"sen_pct":21.0,"sen_gap":40.0,"eal_pct":63.0,"eal_diff":2.0},{"code":"E09000024","la":"Merton","region":"London","pupils":2029,"ks2":70.0,"disadv":58.0,"gap":12.0,"absence":11.54,"severe":0.6,"sen_pct":31.0,"sen_gap":39.0,"eal_pct":73.0,"eal_diff":3.0},{"code":"E08000010","la":"Wigan","region":"North West","pupils":3843,"ks2":66.0,"disadv":51.0,"gap":15.0,"absence":12.36,"severe":0.77,"sen_pct":27.0,"sen_gap":39.0,"eal_pct":64.0,"eal_diff":-2.0},{"code":"E09000025","la":"Newham","region":"London","pupils":4379,"ks2":76.0,"disadv":73.0,"gap":3.0,"absence":18.31,"severe":1.79,"sen_pct":37.0,"sen_gap":39.0,"eal_pct":78.0,"eal_diff":2.0},{"code":"E08000005","la":"Rochdale","region":"North West","pupils":3161,"ks2":58.0,"disadv":47.0,"gap":11.0,"absence":14.48,"severe":0.89,"sen_pct":19.0,"sen_gap":39.0,"eal_pct":61.0,"eal_diff":3.0},{"code":"E06000002","la":"Middlesbrough","region":"North East","pupils":2028,"ks2":63.0,"disadv":56.0,"gap":7.0,"absence":15.8,"severe":1.18,"sen_pct":25.0,"sen_gap":38.0,"eal_pct":64.0,"eal_diff":1.0},{"code":"E06000001","la":"Hartlepool","region":"North East","pupils":1165,"ks2":63.0,"disadv":52.0,"gap":11.0,"absence":13.34,"severe":0.67,"sen_pct":24.0,"sen_gap":39.0,"eal_pct":63.0,"eal_diff":0.0},{"code":"E10000007","la":"Derbyshire","region":"East Midlands","pupils":8434,"ks2":59.0,"disadv":44.0,"gap":15.0,"absence":10.54,"severe":0.76,"sen_pct":22.0,"sen_gap":37.0,"eal_pct":52.0,"eal_diff":-7.0},{"code":"E06000020","la":"Telford and Wrekin","region":"West Midlands","pupils":2507,"ks2":64.0,"disadv":50.0,"gap":14.0,"absence":11.61,"severe":0.83,"sen_pct":24.0,"sen_gap":40.0,"eal_pct":66.0,"eal_diff":2.0},{"code":"E09000005","la":"Brent","region":"London","pupils":3462,"ks2":69.0,"disadv":59.0,"gap":10.0,"absence":13.42,"severe":0.82,"sen_pct":32.0,"sen_gap":37.0,"eal_pct":67.0,"eal_diff":-2.0},{"code":"E10000015","la":"Hertfordshire","region":"East of England","pupils":14318,"ks2":64.0,"disadv":40.0,"gap":24.0,"absence":11.63,"severe":0.91,"sen_pct":25.0,"sen_gap":39.0,"eal_pct":67.0,"eal_diff":3.0},{"code":"E06000049","la":"Cheshire East","region":"North West","pupils":4324,"ks2":65.0,"disadv":44.0,"gap":21.0,"absence":9.47,"severe":0.66,"sen_pct":22.0,"sen_gap":43.0,"eal_pct":64.0,"eal_diff":-1.0},{"code":"E08000023","la":"South Tyneside","region":"North East","pupils":1704,"ks2":62.0,"disadv":49.0,"gap":13.0,"absence":13.3,"severe":0.76,"sen_pct":24.0,"sen_gap":38.0,"eal_pct":70.0,"eal_diff":8.0},{"code":"E09000014","la":"Haringey","region":"London","pupils":2633,"ks2":70.0,"disadv":57.0,"gap":13.0,"absence":15.05,"severe":1.2,"sen_pct":37.0,"sen_gap":33.0,"eal_pct":68.0,"eal_diff":-2.0},{"code":"E06000024","la":"North Somerset","region":"South West","pupils":2393,"ks2":63.0,"disadv":42.0,"gap":21.0,"absence":11.39,"severe":0.74,"sen_pct":21.0,"sen_gap":42.0,"eal_pct":67.0,"eal_diff":4.0},{"code":"E06000018","la":"Nottingham","region":"East Midlands","pupils":3866,"ks2":61.0,"disadv":51.0,"gap":10.0,"absence":16.26,"severe":1.25,"sen_pct":22.0,"sen_gap":39.0,"eal_pct":65.0,"eal_diff":4.0},{"code":"E06000019","la":"Herefordshire, County of","region":"West Midlands","pupils":1949,"ks2":60.0,"disadv":43.0,"gap":17.0,"absence":10.08,"severe":0.62,"sen_pct":21.0,"sen_gap":39.0,"eal_pct":60.0,"eal_diff":0.0},{"code":"E08000026","la":"Coventry","region":"West Midlands","pupils":4620,"ks2":60.0,"disadv":45.0,"gap":15.0,"absence":15.91,"severe":1.48,"sen_pct":23.0,"sen_gap":37.0,"eal_pct":61.0,"eal_diff":1.0},{"code":"E09000004","la":"Bexley","region":"London","pupils":3188,"ks2":67.0,"disadv":53.0,"gap":14.0,"absence":11.49,"severe":0.69,"sen_pct":30.0,"sen_gap":37.0,"eal_pct":78.0,"eal_diff":11.0},{"code":"E09000018","la":"Hounslow","region":"London","pupils":3135,"ks2":69.0,"disadv":53.0,"gap":16.0,"absence":14.94,"severe":0.72,"sen_pct":32.0,"sen_gap":37.0,"eal_pct":72.0,"eal_diff":3.0},{"code":"E06000054","la":"Wiltshire","region":"South West","pupils":5494,"ks2":59.0,"disadv":38.0,"gap":21.0,"absence":10.13,"severe":0.83,"sen_pct":23.0,"sen_gap":36.0,"eal_pct":58.0,"eal_diff":-1.0},{"code":"E10000025","la":"Oxfordshire","region":"South East","pupils":7522,"ks2":62.0,"disadv":40.0,"gap":22.0,"absence":11.87,"severe":0.96,"sen_pct":25.0,"sen_gap":37.0,"eal_pct":63.0,"eal_diff":1.0},{"code":"E08000025","la":"Birmingham","region":"West Midlands","pupils":16127,"ks2":63.0,"disadv":56.0,"gap":7.0,"absence":16.73,"severe":1.22,"sen_pct":23.0,"sen_gap":40.0,"eal_pct":64.0,"eal_diff":1.0},{"code":"E06000035","la":"Medway","region":"South East","pupils":3788,"ks2":60.0,"disadv":44.0,"gap":16.0,"absence":14.91,"severe":1.3,"sen_pct":23.0,"sen_gap":37.0,"eal_pct":66.0,"eal_diff":6.0},{"code":"E08000022","la":"North Tyneside","region":"North East","pupils":2416,"ks2":62.0,"disadv":45.0,"gap":17.0,"absence":11.17,"severe":0.62,"sen_pct":22.0,"sen_gap":40.0,"eal_pct":64.0,"eal_diff":2.0},{"code":"E06000039","la":"Slough","region":"South East","pupils":2450,"ks2":70.0,"disadv":61.0,"gap":9.0,"absence":15.34,"severe":1.02,"sen_pct":26.0,"sen_gap":44.0,"eal_pct":74.0,"eal_diff":4.0},{"code":"E10000018","la":"Leicestershire","region":"East Midlands","pupils":7894,"ks2":63.0,"disadv":43.0,"gap":20.0,"absence":9.6,"severe":0.76,"sen_pct":23.0,"sen_gap":40.0,"eal_pct":67.0,"eal_diff":4.0},{"code":"E06000044","la":"Portsmouth","region":"South East","pupils":2390,"ks2":54.0,"disadv":42.0,"gap":12.0,"absence":12.75,"severe":0.95,"sen_pct":17.0,"sen_gap":37.0,"eal_pct":58.0,"eal_diff":4.0},{"code":"E09000032","la":"Wandsworth","region":"London","pupils":2321,"ks2":69.0,"disadv":53.0,"gap":16.0,"absence":13.64,"severe":0.86,"sen_pct":35.0,"sen_gap":34.0,"eal_pct":70.0,"eal_diff":1.0},{"code":"E08000033","la":"Calderdale","region":"Yorkshire and The Humber","pupils":2626,"ks2":62.0,"disadv":47.0,"gap":15.0,"absence":11.31,"severe":0.54,"sen_pct":23.0,"sen_gap":39.0,"eal_pct":61.0,"eal_diff":-1.0},{"code":"E10000019","la":"Lincolnshire","region":"East Midlands","pupils":8356,"ks2":59.0,"disadv":44.0,"gap":15.0,"absence":12.25,"severe":0.94,"sen_pct":20.0,"sen_gap":39.0,"eal_pct":58.0,"eal_diff":-1.0},{"code":"E08000002","la":"Bury","region":"North West","pupils":2374,"ks2":64.0,"disadv":49.0,"gap":15.0,"absence":12.29,"severe":0.92,"sen_pct":24.0,"sen_gap":40.0,"eal_pct":61.0,"eal_diff":-3.0},{"code":"E10000013","la":"Gloucestershire","region":"South West","pupils":7061,"ks2":59.0,"disadv":39.0,"gap":20.0,"absence":11.92,"severe":0.93,"sen_pct":18.0,"sen_gap":41.0,"eal_pct":59.0,"eal_diff":0.0},{"code":"E08000034","la":"Kirklees","region":"Yorkshire and The Humber","pupils":5341,"ks2":61.0,"disadv":47.0,"gap":14.0,"absence":13.56,"severe":0.87,"sen_pct":21.0,"sen_gap":40.0,"eal_pct":65.0,"eal_diff":4.0},{"code":"E08000006","la":"Salford","region":"North West","pupils":3131,"ks2":60.0,"disadv":47.0,"gap":13.0,"absence":15.55,"severe":1.19,"sen_pct":24.0,"sen_gap":36.0,"eal_pct":61.0,"eal_diff":1.0},{"code":"E09000003","la":"Barnet","region":"London","pupils":4236,"ks2":72.0,"disadv":59.0,"gap":13.0,"absence":11.6,"severe":0.68,"sen_pct":34.0,"sen_gap":38.0,"eal_pct":70.0,"eal_diff":-2.0},{"code":"E09000010","la":"Enfield","region":"London","pupils":4060,"ks2":69.0,"disadv":60.0,"gap":9.0,"absence":14.44,"severe":1.04,"sen_pct":31.0,"sen_gap":38.0,"eal_pct":66.0,"eal_diff":-3.0},{"code":"E06000057","la":"Northumberland","region":"North East","pupils":3331,"ks2":58.0,"disadv":39.0,"gap":19.0,"absence":10.83,"severe":0.6,"sen_pct":22.0,"sen_gap":36.0,"eal_pct":51.0,"eal_diff":-7.0},{"code":"E06000043","la":"Brighton and Hove","region":"South East","pupils":2536,"ks2":60.0,"disadv":41.0,"gap":19.0,"absence":14.16,"severe":1.26,"sen_pct":24.0,"sen_gap":36.0,"eal_pct":59.0,"eal_diff":-1.0},{"code":"E06000066","la":"Somerset","region":"South West","pupils":5943,"ks2":57.0,"disadv":39.0,"gap":18.0,"absence":12.83,"severe":1.01,"sen_pct":17.0,"sen_gap":40.0,"eal_pct":61.0,"eal_diff":4.0},{"code":"E08000024","la":"Sunderland","region":"North East","pupils":3104,"ks2":66.0,"disadv":52.0,"gap":14.0,"absence":13.62,"severe":0.66,"sen_pct":28.0,"sen_gap":38.0,"eal_pct":71.0,"eal_diff":5.0},{"code":"E08000012","la":"Liverpool","region":"North West","pupils":5701,"ks2":57.0,"disadv":45.0,"gap":12.0,"absence":15.11,"severe":0.72,"sen_pct":28.0,"sen_gap":29.0,"eal_pct":60.0,"eal_diff":3.0},{"code":"E06000050","la":"Cheshire West and Chester","region":"North West","pupils":4059,"ks2":61.0,"disadv":41.0,"gap":20.0,"absence":11.41,"severe":0.76,"sen_pct":23.0,"sen_gap":38.0,"eal_pct":65.0,"eal_diff":4.0},{"code":"E10000003","la":"Cambridgeshire","region":"East of England","pupils":7468,"ks2":59.0,"disadv":39.0,"gap":20.0,"absence":11.73,"severe":1.13,"sen_pct":19.0,"sen_gap":40.0,"eal_pct":65.0,"eal_diff":6.0},{"code":"E09000016","la":"Havering","region":"London","pupils":3318,"ks2":65.0,"disadv":45.0,"gap":20.0,"absence":11.94,"severe":0.65,"sen_pct":20.0,"sen_gap":45.0,"eal_pct":69.0,"eal_diff":4.0},{"code":"E06000026","la":"Plymouth","region":"South West","pupils":2973,"ks2":65.0,"disadv":52.0,"gap":13.0,"absence":12.71,"severe":0.82,"sen_pct":26.0,"sen_gap":39.0,"eal_pct":72.0,"eal_diff":7.0},{"code":"E06000047","la":"County Durham","region":"North East","pupils":5592,"ks2":62.0,"disadv":47.0,"gap":15.0,"absence":13.63,"severe":0.87,"sen_pct":25.0,"sen_gap":37.0,"eal_pct":58.0,"eal_diff":-4.0},{"code":"E10000029","la":"Suffolk","region":"East of England","pupils":8063,"ks2":59.0,"disadv":44.0,"gap":15.0,"absence":12.2,"severe":1.04,"sen_pct":20.0,"sen_gap":39.0,"eal_pct":55.0,"eal_diff":-4.0},{"code":"E09000030","la":"Tower Hamlets","region":"London","pupils":3231,"ks2":69.0,"disadv":64.0,"gap":5.0,"absence":17.76,"severe":0.69,"sen_pct":30.0,"sen_gap":39.0,"eal_pct":71.0,"eal_diff":2.0},{"code":"E06000058","la":"Bournemouth, Christchurch and Poole","region":"South West","pupils":3920,"ks2":63.0,"disadv":44.0,"gap":19.0,"absence":10.78,"severe":0.8,"sen_pct":20.0,"sen_gap":43.0,"eal_pct":64.0,"eal_diff":1.0},{"code":"E06000065","la":"North Yorkshire","region":"Yorkshire and The Humber","pupils":6117,"ks2":60.0,"disadv":40.0,"gap":20.0,"absence":10.49,"severe":0.8,"sen_pct":20.0,"sen_gap":40.0,"eal_pct":61.0,"eal_diff":1.0},{"code":"E06000010","la":"Kingston upon Hull, City of","region":"Yorkshire and The Humber","pupils":3323,"ks2":66.0,"disadv":55.0,"gap":11.0,"absence":14.58,"severe":0.92,"sen_pct":25.0,"sen_gap":41.0,"eal_pct":70.0,"eal_diff":4.0},{"code":"E10000014","la":"Hampshire","region":"South East","pupils":15344,"ks2":63.0,"disadv":43.0,"gap":20.0,"absence":9.96,"severe":0.83,"sen_pct":20.0,"sen_gap":43.0,"eal_pct":66.0,"eal_diff":3.0},{"code":"E06000045","la":"Southampton","region":"South East","pupils":2890,"ks2":57.0,"disadv":43.0,"gap":14.0,"absence":15.99,"severe":1.26,"sen_pct":20.0,"sen_gap":37.0,"eal_pct":61.0,"eal_diff":4.0},{"code":"E10000020","la":"Norfolk","region":"East of England","pupils":9173,"ks2":56.0,"disadv":39.0,"gap":17.0,"absence":12.65,"severe":1.06,"sen_pct":20.0,"sen_gap":36.0,"eal_pct":59.0,"eal_diff":3.0},{"code":"E08000019","la":"Sheffield","region":"Yorkshire and The Humber","pupils":6435,"ks2":59.0,"disadv":44.0,"gap":15.0,"absence":15.41,"severe":1.39,"sen_pct":21.0,"sen_gap":38.0,"eal_pct":56.0,"eal_diff":-3.0},{"code":"E08000029","la":"Solihull","region":"West Midlands","pupils":2858,"ks2":67.0,"disadv":50.0,"gap":17.0,"absence":12.46,"severe":0.99,"sen_pct":29.0,"sen_gap":38.0,"eal_pct":75.0,"eal_diff":8.0},{"code":"E08000037","la":"Gateshead","region":"North East","pupils":2139,"ks2":64.0,"disadv":48.0,"gap":16.0,"absence":10.65,"severe":0.61,"sen_pct":23.0,"sen_gap":41.0,"eal_pct":69.0,"eal_diff":5.0},{"code":"E09000028","la":"Southwark","region":"London","pupils":2906,"ks2":70.0,"disadv":63.0,"gap":7.0,"absence":14.52,"severe":0.93,"sen_pct":35.0,"sen_gap":35.0,"eal_pct":71.0,"eal_diff":1.0},{"code":"E09000009","la":"Ealing","region":"London","pupils":3957,"ks2":69.0,"disadv":61.0,"gap":8.0,"absence":14.09,"severe":1.14,"sen_pct":29.0,"sen_gap":40.0,"eal_pct":68.0,"eal_diff":-1.0},{"code":"E06000023","la":"Bristol, City of","region":"South West","pupils":4876,"ks2":59.0,"disadv":41.0,"gap":18.0,"absence":15.92,"severe":1.43,"sen_pct":24.0,"sen_gap":35.0,"eal_pct":59.0,"eal_diff":0.0},{"code":"E08000021","la":"Newcastle upon Tyne","region":"North East","pupils":3196,"ks2":66.0,"disadv":54.0,"gap":12.0,"absence":14.4,"severe":0.8,"sen_pct":26.0,"sen_gap":40.0,"eal_pct":65.0,"eal_diff":-1.0},{"code":"E06000014","la":"York","region":"Yorkshire and The Humber","pupils":1952,"ks2":63.0,"disadv":36.0,"gap":27.0,"absence":11.74,"severe":1.17,"sen_pct":23.0,"sen_gap":40.0,"eal_pct":64.0,"eal_diff":1.0},{"code":"E06000025","la":"South Gloucestershire","region":"South West","pupils":3427,"ks2":64.0,"disadv":41.0,"gap":23.0,"absence":11.92,"severe":1.09,"sen_pct":24.0,"sen_gap":40.0,"eal_pct":67.0,"eal_diff":3.0},{"code":"E09000019","la":"Islington","region":"London","pupils":1686,"ks2":67.0,"disadv":57.0,"gap":10.0,"absence":18.75,"severe":1.03,"sen_pct":38.0,"sen_gap":29.0,"eal_pct":69.0,"eal_diff":2.0},{"code":"E10000011","la":"East Sussex","region":"South East","pupils":5355,"ks2":61.0,"disadv":44.0,"gap":17.0,"absence":14.49,"severe":1.1,"sen_pct":23.0,"sen_gap":38.0,"eal_pct":57.0,"eal_diff":-4.0},{"code":"E08000036","la":"Wakefield","region":"Yorkshire and The Humber","pupils":4274,"ks2":63.0,"disadv":48.0,"gap":15.0,"absence":13.7,"severe":1.1,"sen_pct":27.0,"sen_gap":36.0,"eal_pct":59.0,"eal_diff":-4.0},{"code":"E06000034","la":"Thurrock","region":"East of England","pupils":2486,"ks2":69.0,"disadv":58.0,"gap":11.0,"absence":13.12,"severe":1.08,"sen_pct":26.0,"sen_gap":43.0,"eal_pct":75.0,"eal_diff":6.0},{"code":"E06000061","la":"North Northamptonshire","region":"East Midlands","pupils":4393,"ks2":59.0,"disadv":41.0,"gap":18.0,"absence":12.33,"severe":1.03,"sen_pct":20.0,"sen_gap":39.0,"eal_pct":62.0,"eal_diff":3.0},{"code":"E06000046","la":"Isle of Wight","region":"South East","pupils":1375,"ks2":51.0,"disadv":36.0,"gap":15.0,"absence":15.45,"severe":1.23,"sen_pct":14.0,"sen_gap":37.0,"eal_pct":63.0,"eal_diff":12.0},{"code":"E06000062","la":"West Northamptonshire","region":"East Midlands","pupils":5292,"ks2":63.0,"disadv":44.0,"gap":19.0,"absence":11.45,"severe":1.04,"sen_pct":24.0,"sen_gap":39.0,"eal_pct":67.0,"eal_diff":4.0},{"code":"E09000033","la":"Westminster","region":"London","pupils":1075,"ks2":72.0,"disadv":63.0,"gap":9.0,"absence":18.74,"severe":1.53,"sen_pct":33.0,"sen_gap":39.0,"eal_pct":74.0,"eal_diff":2.0},{"code":"E09000011","la":"Greenwich","region":"London","pupils":3332,"ks2":72.0,"disadv":63.0,"gap":9.0,"absence":13.33,"severe":0.62,"sen_pct":36.0,"sen_gap":36.0,"eal_pct":75.0,"eal_diff":3.0},{"code":"E10000034","la":"Worcestershire","region":"West Midlands","pupils":6272,"ks2":59.0,"disadv":39.0,"gap":20.0,"absence":12.44,"severe":0.83,"sen_pct":21.0,"sen_gap":38.0,"eal_pct":59.0,"eal_diff":0.0},{"code":"E06000064","la":"Westmorland and Furness","region":"North West","pupils":2177,"ks2":58.0,"disadv":40.0,"gap":18.0,"absence":8.72,"severe":0.33,"sen_pct":17.0,"sen_gap":41.0,"eal_pct":55.0,"eal_diff":-3.0},{"code":"E08000001","la":"Bolton","region":"North West","pupils":4217,"ks2":64.0,"disadv":54.0,"gap":10.0,"absence":13.38,"severe":0.72,"sen_pct":25.0,"sen_gap":39.0,"eal_pct":64.0,"eal_diff":0.0},{"code":"E09000020","la":"Kensington and Chelsea","region":"London","pupils":863,"ks2":75.0,"disadv":64.0,"gap":11.0,"absence":16.4,"severe":1.24,"sen_pct":40.0,"sen_gap":35.0,"eal_pct":79.0,"eal_diff":4.0},{"code":"E08000031","la":"Wolverhampton","region":"West Midlands","pupils":3766,"ks2":65.0,"disadv":57.0,"gap":8.0,"absence":14.24,"severe":0.89,"sen_pct":21.0,"sen_gap":44.0,"eal_pct":70.0,"eal_diff":5.0},{"code":"E09000008","la":"Croydon","region":"London","pupils":4447,"ks2":68.0,"disadv":57.0,"gap":11.0,"absence":14.26,"severe":1.14,"sen_pct":30.0,"sen_gap":38.0,"eal_pct":72.0,"eal_diff":4.0},{"code":"E06000013","la":"North Lincolnshire","region":"Yorkshire and The Humber","pupils":1918,"ks2":62.0,"disadv":49.0,"gap":13.0,"absence":12.04,"severe":0.83,"sen_pct":24.0,"sen_gap":38.0,"eal_pct":62.0,"eal_diff":0.0},{"code":"E06000033","la":"Southend-on-Sea","region":"East of England","pupils":2274,"ks2":62.0,"disadv":42.0,"gap":20.0,"absence":14.17,"severe":0.95,"sen_pct":16.0,"sen_gap":46.0,"eal_pct":66.0,"eal_diff":4.0},{"code":"E06000032","la":"Luton","region":"East of England","pupils":3213,"ks2":65.0,"disadv":58.0,"gap":7.0,"absence":13.71,"severe":0.96,"sen_pct":29.0,"sen_gap":36.0,"eal_pct":66.0,"eal_diff":1.0},{"code":"E09000015","la":"Harrow","region":"London","pupils":2867,"ks2":72.0,"disadv":54.0,"gap":18.0,"absence":11.44,"severe":0.8,"sen_pct":30.0,"sen_gap":42.0,"eal_pct":72.0,"eal_diff":0.0},{"code":"E06000030","la":"Swindon","region":"South West","pupils":3077,"ks2":60.0,"disadv":43.0,"gap":17.0,"absence":10.9,"severe":0.82,"sen_pct":18.0,"sen_gap":42.0,"eal_pct":67.0,"eal_diff":7.0},{"code":"E08000016","la":"Barnsley","region":"Yorkshire and The Humber","pupils":2854,"ks2":65.0,"disadv":52.0,"gap":13.0,"absence":12.1,"severe":1.01,"sen_pct":23.0,"sen_gap":42.0,"eal_pct":66.0,"eal_diff":1.0},{"code":"E08000017","la":"Doncaster","region":"Yorkshire and The Humber","pupils":3728,"ks2":63.0,"disadv":49.0,"gap":14.0,"absence":13.17,"severe":0.7,"sen_pct":26.0,"sen_gap":37.0,"eal_pct":64.0,"eal_diff":1.0},{"code":"E10000031","la":"Warwickshire","region":"West Midlands","pupils":6874,"ks2":61.0,"disadv":41.0,"gap":20.0,"absence":12.48,"severe":1.0,"sen_pct":24.0,"sen_gap":37.0,"eal_pct":68.0,"eal_diff":7.0},{"code":"E09000023","la":"Lewisham","region":"London","pupils":3170,"ks2":68.0,"disadv":51.0,"gap":17.0,"absence":13.88,"severe":0.98,"sen_pct":32.0,"sen_gap":36.0,"eal_pct":68.0,"eal_diff":0.0},{"code":"E09000021","la":"Kingston upon Thames","region":"London","pupils":1882,"ks2":67.0,"disadv":42.0,"gap":25.0,"absence":11.1,"severe":0.81,"sen_pct":21.0,"sen_gap":46.0,"eal_pct":70.0,"eal_diff":3.0},{"code":"E08000007","la":"Stockport","region":"North West","pupils":3628,"ks2":66.0,"disadv":44.0,"gap":22.0,"absence":11.14,"severe":0.54,"sen_pct":21.0,"sen_gap":45.0,"eal_pct":67.0,"eal_diff":1.0},{"code":"E06000027","la":"Torbay","region":"South West","pupils":1482,"ks2":59.0,"disadv":44.0,"gap":15.0,"absence":13.53,"severe":1.15,"sen_pct":19.0,"sen_gap":40.0,"eal_pct":63.0,"eal_diff":4.0},{"code":"E06000051","la":"Shropshire","region":"West Midlands","pupils":3010,"ks2":58.0,"disadv":40.0,"gap":18.0,"absence":11.5,"severe":0.6,"sen_pct":21.0,"sen_gap":37.0,"eal_pct":60.0,"eal_diff":2.0},{"code":"E06000009","la":"Blackpool","region":"North West","pupils":1815,"ks2":55.0,"disadv":47.0,"gap":8.0,"absence":15.45,"severe":0.88,"sen_pct":17.0,"sen_gap":38.0,"eal_pct":62.0,"eal_diff":7.0},{"code":"E09000026","la":"Redbridge","region":"London","pupils":3990,"ks2":75.0,"disadv":62.0,"gap":13.0,"absence":15.58,"severe":0.81,"sen_pct":34.0,"sen_gap":41.0,"eal_pct":74.0,"eal_diff":-1.0},{"code":"E08000013","la":"St. Helens","region":"North West","pupils":2062,"ks2":62.0,"disadv":45.0,"gap":17.0,"absence":12.67,"severe":0.79,"sen_pct":31.0,"sen_gap":31.0,"eal_pct":71.0,"eal_diff":9.0},{"code":"E08000008","la":"Tameside","region":"North West","pupils":2994,"ks2":60.0,"disadv":50.0,"gap":10.0,"absence":12.07,"severe":0.64,"sen_pct":25.0,"sen_gap":35.0,"eal_pct":60.0,"eal_diff":0.0},{"code":"E08000009","la":"Trafford","region":"North West","pupils":3306,"ks2":72.0,"disadv":48.0,"gap":24.0,"absence":9.2,"severe":0.37,"sen_pct":35.0,"sen_gap":37.0,"eal_pct":77.0,"eal_diff":5.0},{"code":"E09000006","la":"Bromley","region":"London","pupils":3822,"ks2":71.0,"disadv":47.0,"gap":24.0,"absence":10.96,"severe":0.69,"sen_pct":32.0,"sen_gap":39.0,"eal_pct":76.0,"eal_diff":5.0},{"code":"E06000011","la":"East Riding of Yorkshire","region":"Yorkshire and The Humber","pupils":3483,"ks2":57.0,"disadv":38.0,"gap":19.0,"absence":10.66,"severe":0.63,"sen_pct":18.0,"sen_gap":39.0,"eal_pct":54.0,"eal_diff":-3.0},{"code":"E06000037","la":"West Berkshire","region":"South East","pupils":1888,"ks2":57.0,"disadv":33.0,"gap":24.0,"absence":11.17,"severe":0.79,"sen_pct":22.0,"sen_gap":35.0,"eal_pct":65.0,"eal_diff":8.0},{"code":"E08000004","la":"Oldham","region":"North West","pupils":3590,"ks2":58.0,"disadv":48.0,"gap":10.0,"absence":14.86,"severe":0.75,"sen_pct":19.0,"sen_gap":39.0,"eal_pct":56.0,"eal_diff":-2.0},{"code":"E06000063","la":"Cumberland","region":"North West","pupils":3019,"ks2":56.0,"disadv":36.0,"gap":20.0,"absence":10.22,"severe":0.5,"sen_pct":17.0,"sen_gap":39.0,"eal_pct":55.0,"eal_diff":-1.0},{"code":"E06000042","la":"Milton Keynes","region":"South East","pupils":4001,"ks2":66.0,"disadv":50.0,"gap":16.0,"absence":11.78,"severe":1.06,"sen_pct":22.0,"sen_gap":44.0,"eal_pct":72.0,"eal_diff":6.0},{"code":"E06000004","la":"Stockton-on-Tees","region":"North East","pupils":2519,"ks2":65.0,"disadv":50.0,"gap":15.0,"absence":12.12,"severe":0.63,"sen_pct":24.0,"sen_gap":41.0,"eal_pct":68.0,"eal_diff":3.0},{"code":"E09000031","la":"Waltham Forest","region":"London","pupils":3097,"ks2":74.0,"disadv":63.0,"gap":11.0,"absence":13.42,"severe":0.78,"sen_pct":39.0,"sen_gap":35.0,"eal_pct":73.0,"eal_diff":-1.0},{"code":"E06000052","la":"Cornwall","region":"South West","pupils":5945,"ks2":60.0,"disadv":46.0,"gap":14.0,"absence":12.06,"severe":0.93,"sen_pct":22.0,"sen_gap":38.0,"eal_pct":58.0,"eal_diff":-2.0},{"code":"E09000007","la":"Camden","region":"London","pupils":1292,"ks2":73.0,"disadv":64.0,"gap":9.0,"absence":16.54,"severe":1.08,"sen_pct":32.0,"sen_gap":41.0,"eal_pct":75.0,"eal_diff":2.0},{"code":"E06000059","la":"Dorset","region":"South West","pupils":3570,"ks2":57.0,"disadv":39.0,"gap":18.0,"absence":12.79,"severe":0.99,"sen_pct":19.0,"sen_gap":38.0,"eal_pct":52.0,"eal_diff":-5.0},{"code":"E06000005","la":"Darlington","region":"North East","pupils":1266,"ks2":62.0,"disadv":49.0,"gap":13.0,"absence":14.77,"severe":1.8,"sen_pct":23.0,"sen_gap":39.0,"eal_pct":72.0,"eal_diff":10.0},{"code":"E09000012","la":"Hackney","region":"London","pupils":2303,"ks2":76.0,"disadv":69.0,"gap":7.0,"absence":13.9,"severe":0.81,"sen_pct":45.0,"sen_gap":31.0,"eal_pct":78.0,"eal_diff":2.0},{"code":"E08000030","la":"Walsall","region":"West Midlands","pupils":4030,"ks2":59.0,"disadv":49.0,"gap":10.0,"absence":16.12,"severe":1.19,"sen_pct":16.0,"sen_gap":43.0,"eal_pct":64.0,"eal_diff":5.0},{"code":"E06000038","la":"Reading","region":"South East","pupils":1891,"ks2":62.0,"disadv":45.0,"gap":17.0,"absence":15.3,"severe":1.21,"sen_pct":22.0,"sen_gap":40.0,"eal_pct":67.0,"eal_diff":5.0},{"code":"E06000041","la":"Wokingham","region":"South East","pupils":2354,"ks2":69.0,"disadv":39.0,"gap":30.0,"absence":9.46,"severe":0.6,"sen_pct":28.0,"sen_gap":41.0,"eal_pct":80.0,"eal_diff":11.0},{"code":"E08000027","la":"Dudley","region":"West Midlands","pupils":3988,"ks2":61.0,"disadv":45.0,"gap":16.0,"absence":14.79,"severe":1.3,"sen_pct":20.0,"sen_gap":41.0,"eal_pct":62.0,"eal_diff":1.0},{"code":"E09000022","la":"Lambeth","region":"London","pupils":2685,"ks2":68.0,"disadv":59.0,"gap":9.0,"absence":16.01,"severe":1.07,"sen_pct":36.0,"sen_gap":32.0,"eal_pct":68.0,"eal_diff":0.0},{"code":"E06000007","la":"Warrington","region":"North West","pupils":2629,"ks2":68.0,"disadv":53.0,"gap":15.0,"absence":8.8,"severe":0.38,"sen_pct":31.0,"sen_gap":37.0,"eal_pct":71.0,"eal_diff":3.0},{"code":"E06000003","la":"Redcar and Cleveland","region":"North East","pupils":1610,"ks2":64.0,"disadv":51.0,"gap":13.0,"absence":13.3,"severe":1.03,"sen_pct":27.0,"sen_gap":37.0,"eal_pct":46.0,"eal_diff":-18.0},{"code":"E06000022","la":"Bath and North East Somerset","region":"South West","pupils":1843,"ks2":63.0,"disadv":37.0,"gap":26.0,"absence":10.04,"severe":0.78,"sen_pct":28.0,"sen_gap":35.0,"eal_pct":52.0,"eal_diff":-11.0},{"code":"E06000036","la":"Bracknell Forest","region":"South East","pupils":1429,"ks2":60.0,"disadv":36.0,"gap":24.0,"absence":8.75,"severe":0.42,"sen_pct":23.0,"sen_gap":37.0,"eal_pct":68.0,"eal_diff":8.0},{"code":"E06000012","la":"North East Lincolnshire","region":"Yorkshire and The Humber","pupils":1946,"ks2":66.0,"disadv":55.0,"gap":11.0,"absence":12.74,"severe":0.88,"sen_pct":20.0,"sen_gap":46.0,"eal_pct":74.0,"eal_diff":8.0},{"code":"E09000013","la":"Hammersmith and Fulham","region":"London","pupils":1244,"ks2":77.0,"disadv":63.0,"gap":14.0,"absence":14.91,"severe":0.73,"sen_pct":39.0,"sen_gap":38.0,"eal_pct":78.0,"eal_diff":1.0},{"code":"E06000017","la":"Rutland","region":"East Midlands","pupils":376,"ks2":65.0,"disadv":48.0,"gap":17.0,"absence":9.11,"severe":1.48,"sen_pct":21.0,"sen_gap":44.0,"eal_pct":53.0,"eal_diff":-12.0}];
+
+
+
+// Interactive Plotly choropleth map
+const MAP_GEOJSON_URL = "https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Counties_and_Unitary_Authorities_May_2023_UK_BGC/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson&outSR=4326";
+let boundaryGeojson = null;
+
+const mapMetrics = {
+  ks2: {
+    label: "Overall KS2 attainment",
+    field: "ks2",
+    suffix: "%",
+    colorscale: "Blues",
+    reverse: false
+  },
+  disadv: {
+    label: "Disadvantaged pupil attainment",
+    field: "disadv",
+    suffix: "%",
+    colorscale: "Greens",
+    reverse: false
+  },
+  gap: {
+    label: "Disadvantage attainment gap",
+    field: "gap",
+    suffix: "pp",
+    colorscale: "OrRd",
+    reverse: false
+  },
+  absence: {
+    label: "Persistent absence",
+    field: "absence",
+    suffix: "%",
+    colorscale: "Reds",
+    reverse: false
+  },
+  sen_gap: {
+    label: "SEND attainment gap",
+    field: "sen_gap",
+    suffix: "pp",
+    colorscale: "Purples",
+    reverse: false
+  },
+  eal_diff: {
+    label: "EAL attainment difference",
+    field: "eal_diff",
+    suffix: "pp",
+    colorscale: "RdBu",
+    reverse: false
+  }
+};
+
+function buildHoverText(d) {
+  return [
+    `<b>${d.la}</b>`,
+    `Region: ${d.region}`,
+    `Overall KS2: ${d.ks2}%`,
+    `Disadvantaged KS2: ${d.disadv}%`,
+    `Disadvantage gap: ${d.gap}pp`,
+    `Persistent absence: ${d.absence}%`,
+    `SEND gap: ${d.sen_gap}pp`,
+    `EAL attainment: ${d.eal_pct}%`,
+    `EAL difference: ${d.eal_diff}pp`,
+    `Eligible pupils: ${Number(d.pupils).toLocaleString()}`
+  ].join("<br>");
+}
+
+function drawInteractiveMap(metricKey = "ks2") {
+  const metric = mapMetrics[metricKey];
+  const status = document.getElementById("mapStatus");
+
+  if (!boundaryGeojson || !document.getElementById("interactiveMap")) return;
+
+  const dataCodes = new Set(DATA.map(d => d.code));
+  const matchedFeatures = boundaryGeojson.features.filter(f => {
+    const code = f.properties.CTYUA23CD || f.properties.CTYUA23CD || f.properties.ctyua23cd;
+    return dataCodes.has(code);
+  });
+
+  const mapGeojson = {
+    type: "FeatureCollection",
+    features: matchedFeatures
+  };
+
+  const values = DATA.map(d => d[metric.field]);
+  const trace = {
+    type: "choroplethmapbox",
+    geojson: mapGeojson,
+    locations: DATA.map(d => d.code),
+    z: values,
+    featureidkey: "properties.CTYUA23CD",
+    text: DATA.map(buildHoverText),
+    hovertemplate: "%{text}<extra></extra>",
+    colorscale: metric.colorscale,
+    reversescale: metric.reverse,
+    marker: {
+      line: {
+        width: 0.4,
+        color: "rgba(255,255,255,0.65)"
+      }
+    },
+    colorbar: {
+      title: metric.suffix,
+      thickness: 12,
+      len: 0.78
+    }
+  };
+
+  const layout = {
+    title: {
+      text: metric.label,
+      x: 0.02,
+      xanchor: "left",
+      font: { size: 16 }
+    },
+    mapbox: {
+      style: "carto-positron",
+      center: { lat: 52.7, lon: -1.8 },
+      zoom: 4.8
+    },
+    margin: { t: 44, r: 8, b: 8, l: 8 },
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "rgba(0,0,0,0)"
+  };
+
+  const config = {
+    responsive: true,
+    displayModeBar: true,
+    displaylogo: false
+  };
+
+  Plotly.react("interactiveMap", [trace], layout, config);
+
+  if (status) {
+    status.textContent = "Hover over a local authority to view all indicators. Use the dropdown to change the mapped variable.";
+  }
+}
+
+function updateInteractiveMap() {
+  const select = document.getElementById("mapMetric");
+  drawInteractiveMap(select ? select.value : "ks2");
+}
+
+function initInteractiveMap() {
+  const status = document.getElementById("mapStatus");
+  if (!window.Plotly || !document.getElementById("interactiveMap")) {
+    if (status) status.textContent = "The interactive map could not load because Plotly is unavailable.";
+    return;
+  }
+
+  fetch(MAP_GEOJSON_URL)
+    .then(response => {
+      if (!response.ok) throw new Error("Boundary file could not be loaded.");
+      return response.json();
+    })
+    .then(geojson => {
+      boundaryGeojson = geojson;
+      drawInteractiveMap("ks2");
+    })
+    .catch(error => {
+      console.error(error);
+      if (status) {
+        status.textContent = "The map boundary file could not be loaded. The rest of the page still works. If this persists, upload a local CTYUA GeoJSON file to the repository and we can switch the map to use that file instead.";
+      }
+    });
+}
+
+document.addEventListener("DOMContentLoaded", initInteractiveMap);
+
 
 const tt = document.getElementById('tt');
 const NEWHAM = 'Newham';
